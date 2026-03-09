@@ -1,0 +1,911 @@
+#!/usr/bin/env python3
+
+# Suppress warnings
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
+warnings.filterwarnings("ignore", category=UserWarning)
+import os
+import json
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # Suppress TensorFlow warnings
+import rclpy
+from rclpy.node import Node
+from rclpy.duration import Duration
+from rclpy.qos import QoSProfile, DurabilityPolicy
+from sensor_msgs.msg import Image, JointState
+from std_msgs.msg import String, Header
+from datetime import datetime
+from sensor_msgs.msg import PointCloud2
+import tf2_ros
+from cv_bridge import CvBridge
+import numpy as np
+import cv2
+from cv_utils import _clear_markers
+import time
+from dataclasses import dataclass
+from typing import Tuple
+from collections import Counter
+from matplotlib.colors import to_rgb
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import logging
+from datetime import datetime
+
+# Project imports
+from cv_utils import *
+import utils
+from utils import draw_detections, apply_nms
+from models import DINO, VitSam, OWLv2
+from lost3dsg.msg import Centroid, CentroidArray, Bbox3d, Bbox3dArray
+from object_info import Object
+from world_model import wm
+from lost3dsg.msg import ObjectDescription, ObjectDescriptionArray
+from std_msgs.msg import Bool
+import torch
+if torch.cuda.is_available():
+    torch.backends.cudnn.benchmark = True
+
+
+def compute_fov_volume_from_depth(depth_image, camera_info, node, depth_threshold=4.0):
+    """
+    Compute the 3D FOV volume from the entire depth image.
+
+    Projects all valid depth pixels to 3D, transforms to map frame,
+    then takes min/max to get the bounding volume.
+
+    Args:
+        depth_image: The depth image (numpy array)
+        camera_info: Camera calibration info (CameraInfo message)
+        node: ROS node for TF lookups and logging
+        depth_threshold: Maximum depth to consider (meters)
+
+    Returns:
+        dict: FOV volume with x_min, x_max, y_min, y_max, z_min, z_max in map frame
+              or None if computation fails
+    """
+    from cv_utils import _transform_point_xyz
+
+    try:
+        # Get camera intrinsics
+        K = camera_info.k
+        fx, fy, cx, cy = K[0], K[4], K[2], K[5]
+
+        h, w = depth_image.shape[:2]
+
+        # Convert depth to meters if needed
+        if depth_image.dtype == np.uint16:
+            depth_m = depth_image.astype(np.float32) / 1000.0
+        else:
+            depth_m = depth_image.astype(np.float32)
+
+        # Get valid depth mask - FILTER points beyond 1.8m
+        MAX_DEPTH_FOR_FOV = 1.8  # Maximum depth to consider for FOV (meters)
+        valid_mask = (depth_m > 0.1) & (depth_m < min(depth_threshold, MAX_DEPTH_FOR_FOV)) & np.isfinite(depth_m)
+
+        if not np.any(valid_mask):
+            node.get_logger().warn("No valid depth values found for FOV computation")
+            return None
+
+        # Get coordinates of valid pixels
+        ys, xs = np.nonzero(valid_mask)
+        zs = depth_m[valid_mask]
+
+        # Project all valid pixels to 3D in camera frame
+        Xs = (xs - cx) * zs / fx
+        Ys = (ys - cy) * zs / fy
+
+        # Get min/max in camera frame
+        x_min_cam, x_max_cam = float(Xs.min()), float(Xs.max())
+        y_min_cam, y_max_cam = float(Ys.min()), float(Ys.max())
+        z_min_cam, z_max_cam = float(zs.min()), float(zs.max())
+
+        # Transform the 8 corners of the camera-frame box to map frame
+        camera_frame = camera_info.header.frame_id
+
+        corners_camera = [
+            (x_min_cam, y_min_cam, z_min_cam),
+            (x_max_cam, y_min_cam, z_min_cam),
+            (x_min_cam, y_max_cam, z_min_cam),
+            (x_max_cam, y_max_cam, z_min_cam),
+            (x_min_cam, y_min_cam, z_max_cam),
+            (x_max_cam, y_min_cam, z_max_cam),
+            (x_min_cam, y_max_cam, z_max_cam),
+            (x_max_cam, y_max_cam, z_max_cam),
+        ]
+
+        try:
+            corners_map = [
+                _transform_point_xyz(p, camera_frame, "map", node=node)
+                for p in corners_camera
+            ]
+
+            corners_map_array = np.array(corners_map)
+
+            fov_map = {
+                "x_min": float(corners_map_array[:, 0].min()),
+                "x_max": float(corners_map_array[:, 0].max()),
+                "y_min": float(corners_map_array[:, 1].min()),
+                "y_max": float(corners_map_array[:, 1].max()),
+                "z_min": float(corners_map_array[:, 2].min()),
+                "z_max": float(corners_map_array[:, 2].max())
+            }
+
+            node.get_logger().info(f"FOV volume (map frame): X[{fov_map['x_min']:.2f}, {fov_map['x_max']:.2f}], "
+                                   f"Y[{fov_map['y_min']:.2f}, {fov_map['y_max']:.2f}], "
+                                   f"Z[{fov_map['z_min']:.2f}, {fov_map['z_max']:.2f}]")
+
+            return fov_map
+
+        except Exception as e:
+            node.get_logger().warn(f"Could not transform FOV to map frame: {e}")
+            return None
+
+    except Exception as e:
+        node.get_logger().error(f"Error computing FOV volume: {e}")
+        return None
+
+# Setup file logger and project paths
+file_path = os.path.abspath(__file__)
+# Find project root: if in install dir, go to workspace root, else go up to find CMakeLists.txt
+current_dir = os.path.dirname(file_path)
+PROJECT_ROOT = current_dir.split('/install/')[0] if '/install/' in current_dir else os.path.abspath(os.path.join(current_dir, "../.."))
+log_dir = os.path.join(PROJECT_ROOT, "output")
+os.makedirs(log_dir, exist_ok=True)
+
+# Create log file with timestamp
+log_file = os.path.join(log_dir, f"perception_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
+file_handler = logging.FileHandler(log_file)
+file_handler.setLevel(logging.DEBUG)
+file_handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] %(message)s'))
+
+# Logger for the perception module
+module_logger = logging.getLogger('perception_module')
+module_logger.setLevel(logging.DEBUG)
+module_logger.addHandler(file_handler)
+
+@dataclass
+class Detection:
+    bbox: Tuple[float, float, float, float] 
+    label: str
+    score: float
+    mask: np.ndarray
+
+
+class DetectObjects(Node):
+    def __init__(self):
+        super().__init__('detection_node')
+        
+        # Setup file logging for this node
+        self.file_logger = module_logger
+        self.file_logger.info("=== DetectObjects Node Initialized ===")
+        self.get_logger().info(f"Log saved in: {log_file}")
+
+        # CV Bridge for image conversions
+        self.bridge = CvBridge()
+
+        qos_latch = QoSProfile(depth=10, durability=DurabilityPolicy.TRANSIENT_LOCAL)
+        qos_standard = QoSProfile(depth=10)
+
+        self.pub_image = self.create_publisher(Image, "/image_with_bb", qos_latch)
+        self.COLORS = ['red', 'green', 'blue', 'magenta', 'gray', 'yellow'] * 3
+        self.detector = DINO()
+        self.vitsam = VitSam(utils.ENCODER_VITSAM_PATH, utils.DECODER_VITSAM_PATH)
+
+        self.centroid_pub = self.create_publisher(CentroidArray, "/centroids_custom", qos_latch)
+
+        self.tf_buffer = tf2_ros.Buffer(cache_time=Duration(seconds=30.0))
+        self.tf_listener = tf2_ros.TransformListener(self.tf_buffer, self)
+        
+        self.bbox_pub = self.create_publisher(Bbox3dArray, '/bbox_3d', qos_standard)
+        self.pub_crop = self.create_publisher(Image, "/cropped_image", qos_standard)
+        self.movement_detected_pub = self.create_publisher(Bool, '/robot_movement_detected', qos_standard)
+        self.robot_has_moved_once = False  # Flag to track if robot has moved at least once
+        
+        # Manage robot movement state
+        self.is_stationary = True  
+        self.time_stationary_start = None  
+        self.last_detection_time = None 
+        self.first_detection_done = False  
+        self.min_stationary_after_movement = 6.0  
+
+        # USED DURING TEST PHASE
+        self.manual_trigger_requested = False
+        self.waiting_for_input = False  
+        
+        self.create_subscription(JointState, "joint_states", self.joint_callback, qos_standard)
+        self.head_joints = ['head_1_joint', 'head_2_joint']
+        self.base_joints = ['wheel_left_joint', 'wheel_right_joint']
+        self.position_threshold = 0.0015  # Threshold for position delta (rad)
+        self.last_joint_positions = {}  # Previous positions to calculate delta
+
+
+        # Synced camera data handler (recieve rgb, depth, camera_info, transform together)
+        self.camera_data = utils.SyncedCameraData(self, sync_tolerance_ms=150)
+
+        self.object_list=[]
+        self.pub_object_descriptions = self.create_publisher(ObjectDescriptionArray, '/object_descriptions', qos_standard)
+        
+        self.bbox_marker_pub, self.centroid_marker_pub = init_bbox_publisher(self)
+
+        self.pcl_objects_pub = self.create_publisher(PointCloud2, '/pcl_objects', qos_latch)
+        self.pcl_objects_labels_pub = self.create_publisher(String, '/pcl_objects_labels', qos_latch)
+        self.publish_individual_objects = False  # Flag to enable individual pcl publishing
+
+        self.pcl_object_id_counter = 0  # Counter for unique object IDs (reset each frame)
+
+        self.individual_pcl_publishers = {} 
+
+        # Flag to interrupt processing if the robot moves
+        self.processing_interrupted = False
+
+        self.filtered_objects = []
+
+        # Clear accumulated markers
+        self.clear_accumulated_markers()
+
+    def log_both(self, level, message):
+        # Log on ROS
+        if level == 'info':
+            self.get_logger().info(message)
+        elif level == 'warn':
+            self.get_logger().warn(message)
+        elif level == 'error':
+            self.get_logger().error(message)
+        elif level == 'debug':
+            self.get_logger().debug(message)
+        
+        # Log on file
+        if level == 'info':
+            self.file_logger.info(message)
+        elif level == 'warn':
+            self.file_logger.warning(message)
+        elif level == 'error':
+            self.file_logger.error(message)
+        elif level == 'debug':
+            self.file_logger.debug(message)
+
+    def clear_accumulated_markers(self):
+        """Clear all accumulated markers (centroids and bbox) and reset counters."""
+        # Clear centroid markers
+        try:
+            _clear_markers("/centroid_markers", node=self, publisher=self.centroid_marker_pub)
+            self.get_logger().info("Cleared accumulated centroid markers")
+        except Exception as e:
+            self.get_logger().warn(f"Error clearing centroids: {e}")
+
+        # Clear bbox markers
+        try:
+            _clear_markers("/bbox_marker", node=self, publisher=self.bbox_marker_pub)
+            self.get_logger().info("Cleared accumulated bbox markers")
+        except Exception as e:
+            self.get_logger().warn(f"Error clearing bbox: {e}")
+
+        # Reset counters
+        if hasattr(self, '_centroid_marker_id_counter'):
+            self._centroid_marker_id_counter = 0
+        if hasattr(self, '_bbox_marker_id_counter'):
+            self._bbox_marker_id_counter = 0
+
+        self.get_logger().info("Marker counters reset")
+    
+   
+    def color_pcl(self, detections, data):
+        """Generate and publish colored PointCloud2 from masks"""
+        camera_info = data['camera_info']
+        depth_img = data['depth']
+        
+        mask_list = []
+        for detection in detections:
+            mask = detection.mask
+            mask2d = mask[:, :, 0]
+            mask2d = (mask2d.astype(np.uint8) * 255)
+            mask_list.append(mask2d)
+        
+        self.get_logger().info(f"color_pcl: processing {len(mask_list)} masks for PointCloud2")
+        self.file_logger.info(f"color_pcl: processing {len(mask_list)} masks for PointCloud2")
+        
+        # Publish aggregated PointCloud2 for all objects
+        try:
+            labels = [det.label if hasattr(det, 'label') else f"obj_{i}" for i, det in enumerate(detections)]
+            
+            self.get_logger().info(f"Calling mask_list_to_pointcloud2 with {len(labels)} objects: {labels}")
+            self.file_logger.info(f"Calling mask_list_to_pointcloud2 with {len(labels)} objects: {labels}")
+
+            mask_list_to_pointcloud2(
+                mask_list,
+                depth_img,
+                camera_info,
+                node=self,
+                labels=labels,
+                topic="/pcl_objects",
+                max_points_per_obj=1500,
+                publisher=self.pcl_objects_pub,
+                labels_publisher=self.pcl_objects_labels_pub,
+            )
+            
+            self.get_logger().info("mask_list_to_pointcloud2 completed")
+
+            # Publish individual PointCloud2 for each object automatically if the user chooses
+            try:
+                # Set the flag to True if you wanna see individual pointclouds for each object
+                if self.publish_individual_objects:
+                    published_count = publish_individual_pointclouds_by_id(
+                        mask_list,
+                        depth_img,
+                        camera_info,
+                        node=self,
+                        labels=labels,
+                        frame_id="map",  # Use map for static room coordinates
+                        topic_prefix="/pcl_id",
+                        publishers_dict=self.individual_pcl_publishers,
+                        id_counter_start=self.pcl_object_id_counter,
+                        timestamp=camera_info.header.stamp,  # Use original image timestamp
+                    )
+                    # Update the counter for the next detection
+                    self.pcl_object_id_counter += published_count
+                    self.get_logger().info(f"publish_individual_pointclouds_by_id completed - {published_count} clouds published")
+            except Exception as e:
+                self.get_logger().error(f"Error in publish_individual_pointclouds_by_id: {e}")
+
+        except Exception as e:
+            self.get_logger().error(f"Error publishing aggregated PointCloud2: {e}")
+        
+        return
+    
+    def run_detection(self, camera_data):
+        self.get_logger().debug("Running detection...")
+        
+        self.log_both("info", "=== START DETECTION ===")
+        self.log_both("info", "Calling VLM for object identification...")
+        objects_to_identify = vlm_call(
+            open(os.path.join(os.path.dirname(file_path), "object_identification_prompt.txt"), "r").read(),
+            numpy_to_base64(camera_data['rgb'])
+        )
+
+        labels = []
+        for label in objects_to_identify.split(','):
+            labels.append(label.strip())
+
+        self.log_both("info", f"Parsed labels ({len(labels)} objects): {labels}")
+
+        self.detector.set_classes(labels)
+
+        #inference 
+        bboxs, labels, scores = self.detector.predict(camera_data['rgb'], box_threshold=0.32, text_threshold=0.25)
+        
+        
+        self.log_both("info", f"OWLv2 detected {len(labels)} objects with labels: {labels}")
+
+        # Apply NMS to remove overlapping bounding boxes
+        if len(bboxs) > 0:
+            bboxs, labels, scores = apply_nms(bboxs, labels, scores, iou_threshold=0.5)
+            self.log_both("info", f"After NMS: {len(labels)} objects remaining with labels: {labels}")
+
+        # Check movement after predict
+        if not self.is_stationary:
+            # ROS2_MIGRATION
+            self.log_both("warn", "Robot moving after OWLv2 predict, interrupting")
+            self.processing_interrupted = True
+            return []
+
+        #Obtain masks for each bbox
+        
+        detections = []
+        for bbox, label_name, score in zip(bboxs, labels, scores):
+
+            masks, _ = self.vitsam(camera_data['rgb'].copy(), bbox)
+            for mask in masks:
+                mask_np = mask.cpu().numpy() if hasattr(mask, 'cpu') else np.array(mask)
+                mask_np = mask_np.transpose(1, 2, 0)
+                detection = Detection(
+                    bbox=tuple(bbox),
+                    label=label_name,
+                    score=score,
+                    mask=mask_np
+                )
+                detections.append(detection)
+
+        # Reset point cloud ID counter for each new perception to avoid color overlapping
+        self.pcl_object_id_counter = 0
+
+        self.color_pcl(detections, camera_data)
+
+        self.log_both("info", f"Finished detection with {len(detections)} final detections.")
+
+        return detections
+
+    def process_crop_vlm(self, crop_info):
+        """Process a single cropped object from the original image using VLM."""
+        if crop_info is None:
+            return None
+            
+        label = crop_info['label']
+        cropped = crop_info['cropped']
+        # Load prompt from file
+        prompt_file_path = os.path.join(os.path.dirname(file_path), "visual_prompt.txt")
+        with open(prompt_file_path, "r") as f:
+            visual_prompt_template = f.read().strip()
+        
+        visual_prompt = visual_prompt_template.replace("{LABEL}", label)
+        encoded_image = numpy_to_base64(cropped)
+        
+        try:
+            json_answer = vlm_call(visual_prompt, encoded_image)
+            
+            # Parsing JSON
+            json_data = json.loads(json_answer)
+            obj_data = json_data.get("objects", [{}])[0]
+            
+            return {
+                "label": label,
+                "json_answer": json_answer,
+                "description": obj_data.get("description", "unknown"),
+                "color": obj_data.get("color", "unknown"),
+                "material": obj_data.get("material", "unknown"),
+                "shape": obj_data.get("shape", "unknown")
+            }
+        except Exception as e:
+            self.get_logger().error(f"VLM error for {label}: {e}")
+            return {
+                "label": label,
+                "json_answer": "{}",
+                "description": "unknown",
+                "color": "unknown",
+                "material": "unknown",
+                "shape": "unknown"
+            }
+
+
+    def publish_objects(self):
+        self.processing_interrupted = False
+        self.log_both("info", "=== New perception cycle started ===")
+
+        if not self.is_stationary:
+            self.get_logger().warn("Robot moving at the start, canceling processing")
+            return
+
+        # --- 1. Get synced data ---
+        camera_data = self.camera_data.get_synced_data()
+
+        if camera_data is None:
+            self.get_logger().warn("Could not get synced camera data, waiting ...")
+            return
+
+        image_raw = camera_data['rgb']
+        depth = camera_data['depth']
+        camera_info = camera_data['camera_info']
+        camera_frame = camera_data['camera_frame']
+
+        self.current_transforms = {}
+        self.current_transforms[(camera_frame, "map")] = camera_data['transform']
+
+        image_crop_source = image_raw.copy()
+        image_for_bb = image_raw.copy()
+
+        # --- 2. Run detection ---
+        detections = self.run_detection(camera_data)
+
+        if self.processing_interrupted or not self.is_stationary:
+            self.get_logger().error("Processing interrupted: robot moving during detection")
+            return
+
+        if not detections:
+            self.get_logger().warn("No objects perceived")
+
+            empty_cloud = PointCloud2()
+            empty_cloud.header = Header(stamp=self.get_clock().now().to_msg(), frame_id="map")
+            empty_cloud.height = 1
+            empty_cloud.width = 0
+            self.pcl_objects_pub.publish(empty_cloud)
+            self.get_logger().info("Published empty PointCloud2 (0 points)")
+
+            empty_descriptions = ObjectDescriptionArray()
+            empty_descriptions.header = Header(stamp=self.get_clock().now().to_msg(), frame_id="map")
+            self.pub_object_descriptions.publish(empty_descriptions)
+            self.get_logger().warn("Published ObjectDescriptionArray EMPTY (0 objects)")
+
+            empty_bboxes = Bbox3dArray()
+            empty_bboxes.header = Header(stamp=self.get_clock().now().to_msg(), frame_id="map")
+
+            fov_volume = compute_fov_volume_from_depth(depth, camera_info, self)
+            if fov_volume:
+                empty_bboxes.fov_x_min = fov_volume["x_min"]
+                empty_bboxes.fov_x_max = fov_volume["x_max"]
+                empty_bboxes.fov_y_min = fov_volume["y_min"]
+                empty_bboxes.fov_y_max = fov_volume["y_max"]
+                empty_bboxes.fov_z_min = fov_volume["z_min"]
+                empty_bboxes.fov_z_max = fov_volume["z_max"]
+
+            self.bbox_pub.publish(empty_bboxes)
+            self.get_logger().info("Published empty Bbox3dArray (0 bboxes) with FOV")
+
+            self.waiting_for_input = False
+            return
+
+        img_with_bb = draw_detections(image_for_bb, detections)
+        img_msg = self.bridge.cv2_to_imgmsg(img_with_bb, "bgr8")
+        img_msg.header.stamp = self.get_clock().now().to_msg()
+        img_msg.header.frame_id = camera_info.header.frame_id
+        self.pub_image.publish(img_msg)
+        self.get_logger().info("Published final image_with_bb with BBoxes")
+
+        # --- Save visualizations ---
+        viz_output_dir = os.path.join(PROJECT_ROOT, "output/visualizations")
+        os.makedirs(viz_output_dir, exist_ok=True)
+        timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
+        bbox_img_path = os.path.join(viz_output_dir, f"bbox_{timestamp_str}.jpg")
+        cv2.imwrite(bbox_img_path, img_with_bb)
+        self.get_logger().info(f"Saved image with bbox: {bbox_img_path}")
+
+        depth_viz_dir = os.path.join(viz_output_dir, "depth")
+        os.makedirs(depth_viz_dir, exist_ok=True)
+        depth_normalized = cv2.normalize(depth, None, 0, 255, cv2.NORM_MINMAX)
+        depth_colored = cv2.applyColorMap(depth_normalized.astype(np.uint8), cv2.COLORMAP_JET)
+        depth_viz_path = os.path.join(depth_viz_dir, f"depth_{timestamp_str}.jpg")
+        cv2.imwrite(depth_viz_path, depth_colored)
+        self.get_logger().info(f"Saved depth visualization: {depth_viz_path}")
+
+        pcl_viz_dir = os.path.join(viz_output_dir, "pointclouds")
+        os.makedirs(pcl_viz_dir, exist_ok=True)
+        pcl_overlay = image_raw.copy()
+        colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (255, 0, 255), (0, 255, 255)]
+        for idx, det in enumerate(detections):
+            mask_2d = (det.mask[:, :, 0] * 255).astype(np.uint8)
+            color_bgr = colors[idx % len(colors)]
+            color_rgb = (color_bgr[2]/255.0, color_bgr[1]/255.0, color_bgr[0]/255.0)
+            overlay_mask_on_image(pcl_overlay, mask_2d, color_rgb=color_rgb, alpha=0.4)
+            moments = cv2.moments(mask_2d)
+            if moments['m00'] != 0:
+                cx = int(moments['m10'] / moments['m00'])
+                cy = int(moments['m01'] / moments['m00'])
+                cv2.putText(pcl_overlay, det.label, (cx, cy),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, color_bgr, 2)
+        pcl_overlay_path = os.path.join(pcl_viz_dir, f"pcl_overlay_{timestamp_str}.jpg")
+        cv2.imwrite(pcl_overlay_path, pcl_overlay)
+        self.get_logger().info(f"Saved PCL overlay visualization: {pcl_overlay_path}")
+
+        # --- 3. Prepare labels ---
+        centroids_3d = []
+        bboxes_3d = []
+        labels1 = []
+        descriptions = []
+
+        label_counts = Counter(det.label for det in detections)
+        label_seen = Counter()
+        for det in detections:
+            label_seen[det.label] += 1
+            if label_counts[det.label] > 1:
+                det.instance_label = f"{det.label}#{label_seen[det.label]}"
+            else:
+                det.instance_label = det.label
+            labels1.append(det.instance_label)
+
+        # BBOX3D message
+        msg = Bbox3dArray()
+        msg.header = Header(stamp=self.get_clock().now().to_msg(), frame_id="map")
+
+        fov_volume = compute_fov_volume_from_depth(depth, camera_info, self)
+        if fov_volume:
+            msg.fov_x_min = fov_volume["x_min"]
+            msg.fov_x_max = fov_volume["x_max"]
+            msg.fov_y_min = fov_volume["y_min"]
+            msg.fov_y_max = fov_volume["y_max"]
+            msg.fov_z_min = fov_volume["z_min"]
+            msg.fov_z_max = fov_volume["z_max"]
+
+        # =====================================================
+        # FIX: cancella i vecchi marker PRIMA di pubblicarne
+        # di nuovi, non dopo
+        # =====================================================
+        self.clear_accumulated_markers()
+
+        # --- 4. Calculate 3D centroids and bboxes ---
+        all_masks = [det.mask[:, :, 0] for det in detections]
+        centroids_3d, bboxes_3d = mask_list_to_centroid_and_bbox(
+            all_masks, labels1, depth, camera_info, node=self,
+            bbox_marker_pub=self.bbox_marker_pub,
+            centroid_marker_pub=self.centroid_marker_pub
+        )
+
+        # --- Create output directories ---
+        output_dir = os.path.expanduser(os.path.join(os.path.dirname(file_path), "../../output"))
+        os.makedirs(output_dir, exist_ok=True)
+        crops_output_dir = os.path.join(output_dir, "cropped_images")
+        os.makedirs(crops_output_dir, exist_ok=True)
+
+        # --- 5. Prepare crop images ---
+        crops_data = []
+        h, w = image_crop_source.shape[:2]
+
+        for idx, det in enumerate(detections):
+            bbox_3d = bboxes_3d[idx]
+            x_min, y_min, x_max, y_max = map(int, det.bbox)
+            x_min = max(0, min(x_min, w - 1))
+            y_min = max(0, min(y_min, h - 1))
+            x_max = max(x_min + 1, min(x_max, w))
+            y_max = max(y_min + 1, min(y_max, h))
+            cropped = image_crop_source[y_min:y_max, x_min:x_max].copy()
+
+            if cropped.size == 0 or cropped.shape[0] == 0 or cropped.shape[1] == 0:
+                self.get_logger().warn(f"Invalid crop for {det.label}: bbox={det.bbox}, image dimensions={h}x{w}")
+                crops_data.append(None)
+                continue
+
+            timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
+            crop_with_box = cropped.copy()
+            cv2.rectangle(crop_with_box, (0, 0), (crop_with_box.shape[1]-1, crop_with_box.shape[0]-1), (0, 255, 0), 2)
+            crop_filename = f"crop_{det.instance_label.replace(' ', '_')}_{timestamp_str}_{idx}.jpg"
+            cv2.imwrite(os.path.join(crops_output_dir, crop_filename), crop_with_box)
+
+            crops_data.append({
+                'cropped': cropped,
+                'label': det.instance_label,
+                'idx': idx
+            })
+
+        # --- Publish all crops ---
+        for crop_info in crops_data:
+            if crop_info is None:
+                continue
+            try:
+                crop_msg = self.bridge.cv2_to_imgmsg(crop_info['cropped'], encoding="bgr8")
+                crop_msg.header.stamp = self.get_clock().now().to_msg()
+                crop_msg.header.frame_id = "camera"
+                self.pub_crop.publish(crop_msg)
+                self.get_logger().info(f"Published crop for {crop_info['label']}")
+            except Exception as e:
+                self.get_logger().error(f"Error in crop conversion: {e}")
+
+        # --- 6. Call VLM in parallel ---
+        with ThreadPoolExecutor(max_workers=min(4, len(crops_data))) as executor:
+            future_to_crop = {executor.submit(self.process_crop_vlm, crop_info): crop_info
+                            for crop_info in crops_data}
+            vlm_results = [None] * len(crops_data)
+            for future in as_completed(future_to_crop):
+                result = future.result()
+                if result:
+                    for i, crop_info in enumerate(crops_data):
+                        if crop_info and crop_info['label'] == result['label']:
+                            vlm_results[i] = result
+                            self.get_logger().info(f"Completed VLM call for {result['label']}")
+                            break
+
+        # --- 7. Build descriptions and bboxes ---
+        for idx, det in enumerate(detections):
+            result = vlm_results[idx] if idx < len(vlm_results) else None
+            bbox_3d = bboxes_3d[idx] if idx < len(bboxes_3d) else None
+            final_label = getattr(det, "instance_label", det.label)
+
+            if result is None:
+                descriptions.append({
+                    "description": "unknown",
+                    "color": "unknown",
+                    "material": "unknown",
+                    "shape": "unknown"
+                })
+            else:
+                descriptions.append({
+                    "description": result['description'],
+                    "color": result['color'],
+                    "material": result['material'],
+                    "shape": result['shape']
+                })
+
+            if bbox_3d is not None:
+                box_msg = Bbox3d()
+                box_msg.label = final_label
+                box_msg.x_min = bbox_3d["x_min"]
+                box_msg.y_min = bbox_3d["y_min"]
+                box_msg.z_min = bbox_3d["z_min"]
+                box_msg.x_max = bbox_3d["x_max"]
+                box_msg.y_max = bbox_3d["y_max"]
+                box_msg.z_max = bbox_3d["z_max"]
+                msg.boxes.append(box_msg)
+
+        self.bbox_pub.publish(msg)
+
+        # --- 8. Publish ObjectDescriptionArray ---
+        object_desc_array_msg = ObjectDescriptionArray()
+        object_desc_array_msg.header = Header(stamp=self.get_clock().now().to_msg(), frame_id="map")
+
+        for det, desc_dict in zip(detections, descriptions):
+            final_label = getattr(det, "instance_label", det.label)
+            o = ObjectDescription()
+            o.label = final_label
+            o.description = desc_dict["description"]
+            o.color = desc_dict["color"]
+            o.material = desc_dict["material"]
+            o.shape = desc_dict["shape"]
+            object_desc_array_msg.descriptions.append(o)
+
+        self.pub_object_descriptions.publish(object_desc_array_msg)
+
+        # --- 9. Update World Model ---
+        wm.actual_perceptions.clear()
+
+        for det, centroid, bbox, desc_dict in zip(detections, centroids_3d, bboxes_3d, descriptions):
+            wm.add_actual_perception(Object(
+                det.label,
+                centroid,
+                bbox,
+                description=desc_dict["description"],
+                color=desc_dict["color"],
+                material=desc_dict["material"],
+                shape=desc_dict["shape"]
+            ))
+
+        perceptions_output_dir = os.path.join(PROJECT_ROOT, "output")
+        os.makedirs(perceptions_output_dir, exist_ok=True)
+        perceptions_output_path = os.path.join(perceptions_output_dir, "actual_perceptions.json")
+
+        new_perceptions = [
+            {
+                "label": obj.label,
+                "centroid": obj.centroid.tolist() if hasattr(obj.centroid, 'tolist') else (list(obj.centroid) if obj.centroid is not None else None),
+                "bbox": obj.bbox,
+                "description": obj.description,
+                "color": obj.color,
+                "material": obj.material,
+                "shape": obj.shape
+            }
+            for obj in wm.actual_perceptions
+        ]
+
+        with open(perceptions_output_path, "a") as f:
+            json.dump(new_perceptions, f, indent=4)
+
+        self.waiting_for_input = False
+        self.log_both('info', "=== PUBLISH_OBJECTS COMPLETED - Exiting function ===")  
+    
+    
+
+    def joint_callback(self, msg):
+        """Callback to monitor robot joint states and detect movement."""
+        deltas = []
+
+        for j in self.head_joints + self.base_joints:
+            if j in msg.name:
+                idx = msg.name.index(j)
+                pos = msg.position[idx]
+
+                # Calculate position delta
+                if j in self.last_joint_positions:
+                    delta = abs(pos - self.last_joint_positions[j])
+                    deltas.append(delta)
+
+                self.last_joint_positions[j] = pos
+
+        if not deltas:
+            return
+
+        # Compute mean delta position
+        media_delta = sum(deltas) / len(deltas)
+        was_stationary = self.is_stationary
+        currently_stationary = media_delta < self.position_threshold
+
+        if currently_stationary and not was_stationary:
+            # Robot just stopped after movement - START timer from now
+            self.is_stationary = True
+            self.time_stationary_start = self.get_clock().now()
+            msg = f"Robot stopped. Timer started - next detection in {self.min_stationary_after_movement}s"
+            self.log_both('info', msg)
+        elif currently_stationary and was_stationary:
+            # Already stationary - nothing to do, timer continues from last detection
+            self.is_stationary = True
+        elif not currently_stationary:
+            # Robot is moving - stop any ongoing processing
+            self.is_stationary = False
+            if was_stationary:
+                self.log_both('warn', "MOVEMENT DETECTED! The robot has moved.")
+                if not self.robot_has_moved_once:
+                    self.robot_has_moved_once = True
+                    msg = Bool()
+                    msg.data = True
+                    self.movement_detected_pub.publish(msg)
+                    self.log_both('warn', "First movement detected - published to /robot_movement_detected")
+                self.file_logger.warning(f"  Average joint delta: {media_delta:.8f} rad")
+                self.processing_interrupted = True
+                # CRITICAL FIX: Reset timer when robot starts moving
+                # Otherwise timer keeps running and detection triggers too early when robot stops
+                self.time_stationary_start = None
+                self.log_both('info', "Timer reset due to movement - will restart when robot stops")
+
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = DetectObjects()
+
+    # Thread to handle terminal input (for test it can be useful to trigger manually the perception)
+    def input_thread():
+        while rclpy.ok():
+            try:
+                # Wait for user input (blocking)
+                input()  # Wait for ENTER
+
+                # When ENTER is received, set the flag
+                if node.waiting_for_input:
+                    node.manual_trigger_requested = True
+                    node.waiting_for_input = False
+                    node.get_logger().info("Input received! Starting perception...")
+                elif not node.first_detection_done:
+                    # Allow triggering even before the first detection
+                    node.manual_trigger_requested = True
+                    node.get_logger().info("Input received! Starting first perception...")
+            except:
+                break
+
+    # Start thread for input (ENABLE ONLY DURING TEST and set waiting_for_input = True where needed)
+    #input_handler = threading.Thread(target=input_thread, daemon=True)
+    #input_handler.start()
+
+    def timer_callback():
+        current_time = node.get_clock().now()
+
+        # Case MANUAL TRIGGER - has priority over everything
+        if node.manual_trigger_requested:
+            if node.camera_data.get_synced_data() is not None:
+                node.log_both('info', "=== MANUAL PERCEPTION TRIGGERED ===")
+                node.publish_objects()
+                # Capture time AFTER publish_objects completes
+                completion_time = node.get_clock().now()
+                node.first_detection_done = True
+                node.last_detection_time = completion_time
+                node.time_stationary_start = completion_time  # Reset timer after detection
+                node.manual_trigger_requested = False  # Reset flag
+            else:
+                node.get_logger().warn("Trigger received but camera data not available - retrying next cycle")
+            return
+
+        # Case 1: FIRST DETECTION
+        if not node.first_detection_done:
+            if node.camera_data.get_synced_data() is not None:
+                msg = "First detection: synchronized data available – starting perception."
+                node.log_both('info', msg)
+                node.publish_objects()
+                # Capture time AFTER publish_objects completes
+                completion_time = node.get_clock().now()
+                node.first_detection_done = True
+                node.last_detection_time = completion_time
+                node.time_stationary_start = completion_time  # Reset timer after first detection
+            else:
+                node.file_logger.debug("Waiting for synchronized data for first detection...")
+            return
+
+        # Case 2: RE-DETECTION AFTER TIME INTERVAL (Set the time interval as you prefer) now for five seconds
+        print("________________ Timer callback: checking for re-detection conditions... __________________")
+        print("Stationary:", node.is_stationary)
+        print("Time stationary for : ", (current_time - node.time_stationary_start).nanoseconds / 1e9 if node.time_stationary_start else "N/A")
+        print("Threshold: ", node.min_stationary_after_movement)
+
+        if node.is_stationary and node.time_stationary_start is not None:
+            time_stationary = (current_time - node.time_stationary_start).nanoseconds / 1e9
+            print(f"DEBUG: time_stationary={time_stationary:.2f}s >= threshold={node.min_stationary_after_movement}s? {time_stationary >= node.min_stationary_after_movement}")
+
+            if time_stationary >= node.min_stationary_after_movement:
+                # Robot is stationary for enough time, data are enough stable
+                node.log_both('info', "Robot stationary for sufficient time – starting new perception cycle.")
+                print("DEBUG: About to call publish_objects()")
+                node.publish_objects()
+                print("DEBUG: publish_objects() completed, resetting timer")
+                # Capture time AFTER publish_objects completes
+                completion_time = node.get_clock().now()
+                node.last_detection_time = completion_time
+                node.time_stationary_start = completion_time  # Reset timer after detection
+                print(f"DEBUG: Timer reset to completion_time (not current_time from start of callback)")
+            else:
+                print(f"DEBUG: Not enough time yet, waiting {node.min_stationary_after_movement - time_stationary:.2f}s more")
+            return
+        else:
+            print(f"DEBUG: Skipping re-detection - is_stationary={node.is_stationary}, time_stationary_start={'None' if node.time_stationary_start is None else 'set'}")
+
+    _timer = node.create_timer(0.5, timer_callback)  
+
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        node.destroy_node()
+        rclpy.shutdown()
+
+
+if __name__ == "__main__":
+    main()

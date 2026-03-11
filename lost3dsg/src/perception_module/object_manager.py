@@ -20,6 +20,7 @@ from utils import *
 from nlp_utils import *
 from datetime import datetime
 from cv_utils import *
+from map_database import MapDatabase
 
 # =============  EXPLORATION PARAMETERS =============
 EXPLORATION_IOU_THRESHOLD = 0.18 # IoU threshold to match objects during exploration phase
@@ -557,6 +558,7 @@ class ObjectManagerNode(Node):
         self.uncertain_objects = []
         self.tracking_step_counter = 0
         self.exploration_step_counter = 0
+        self.db = MapDatabase(db_path=os.path.join(log_dir, "tiago_temporal_map_1.db"))
 
         qos_latch = QoSProfile(depth=10, durability=DurabilityPolicy.TRANSIENT_LOCAL)
         qos_standard = QoSProfile(depth=10)
@@ -649,6 +651,11 @@ class ObjectManagerNode(Node):
         new_obj.embedding = description_embedding
         wm.persistent_perceptions.append(new_obj)
 
+         # AGGIUNGI (3 righe):
+        phase = "exploration" if in_exploration else "tracking"
+        step  = self.exploration_step_counter if in_exploration else self.tracking_step_counter
+        self.db.on_new_object(new_obj, phase=phase, step=step)
+
         x_size = bbox["x_max"] - bbox["x_min"]
         y_size = bbox["y_max"] - bbox["y_min"]
         z_size = bbox["z_max"] - bbox["z_min"]
@@ -708,12 +715,19 @@ class ObjectManagerNode(Node):
             # Remove from old position
             if best_match in wm.persistent_perceptions:
                 wm.persistent_perceptions.remove(best_match)
+                self.db.on_object_moved(
+                best_match, old_bbox=best_match.bbox, new_bbox=bbox,
+                distance=distance, iou=iou,
+                step=self.tracking_step_counter
+            )
                 print(f"🔄 MODIFICATION: '{best_match.label}' removed from old position")
 
             # Add to uncertain if moved far (>0.8m)
             if distance > 0.8:
                 if best_match not in self.uncertain_objects:
                     self.uncertain_objects.append(best_match)
+                    self.db.on_uncertain_added(best_match, step=self.tracking_step_counter)
+
                     print(f"📝 '{best_match.label}' added to UNCERTAIN_OBJECTS (movement={distance:.3f}m)")
                     tracking_logger.log_uncertain_added(best_match.label, "Large displacement detected", distance,
                                                        bbox=best_match.bbox, step_number=self.tracking_step_counter,
@@ -773,6 +787,9 @@ class ObjectManagerNode(Node):
                 tracking_logger.log_deletion(obj.label, "Object in POV but not detected", bbox=obj.bbox,
                                             step_number=self.tracking_step_counter, obj=obj, case_type="NOT SEEN IN POV")
                 wm.persistent_perceptions.remove(obj)
+                self.db.on_object_deleted(obj, reason="not seen in POV",
+                                  step=self.tracking_step_counter)
+
             save_persistent_perceptions(self)
             return True
         else:

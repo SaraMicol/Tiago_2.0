@@ -236,8 +236,22 @@ class DetectObjects(Node):
     def log_both(self, level: str, message: str):
         """Log to both ROS logger and file logger."""
         ros_lvl, file_lvl = self._LOG_METHODS.get(level, ('info', 'info'))
-        getattr(self.get_logger(), ros_lvl)(message)
-        getattr(self.file_logger,  file_lvl)(message)
+        
+        # ROS logger - usa metodi diretti invece di getattr
+        logger = self.get_logger()
+        if ros_lvl == 'debug':
+            logger.debug(message)
+        elif ros_lvl == 'info':
+            logger.info(message)
+        elif ros_lvl == 'warn' or ros_lvl == 'warning':
+            logger.warn(message)
+        elif ros_lvl == 'error':
+            logger.error(message)
+        elif ros_lvl == 'fatal':
+            logger.fatal(message)
+        
+        # File logger - getattr va bene qui
+        getattr(self.file_logger, file_lvl)(message)
 
     def clear_accumulated_markers(self):
         """Clear centroid/bbox markers and reset their ID counters."""

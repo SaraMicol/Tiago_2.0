@@ -1,0 +1,8 @@
+[submodule "circus"]
+	path = circus
+	url = https://github.com/SPQRTeam/circus.git
+	branch = michele_hri
+[submodule "simbridge"]
+	path = simbridge
+	url = https://github.com/SPQRTeam/simbridge.git
+	branch = michele_hri

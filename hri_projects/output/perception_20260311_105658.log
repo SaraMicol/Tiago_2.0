@@ -1,0 +1,60 @@
+2026-03-11 10:56:58,247 [INFO] === DetectObjects Node Initialized ===
+2026-03-11 10:57:03,077 [DEBUG] Waiting for synced data...
+2026-03-11 10:57:03,580 [INFO] First detection: data available — starting perception.
+2026-03-11 10:57:03,581 [INFO] === New perception cycle started ===
+2026-03-11 10:57:03,582 [INFO] === START DETECTION ===
+2026-03-11 10:57:11,643 [INFO] VLM labels (3): ['book', 'headphones', 'table']
+2026-03-11 10:57:22,084 [INFO] OWLv2 detected 4 objects: ['table', 'headphones', 'book', 'book']
+2026-03-11 10:57:22,085 [INFO] After NMS: 4 objects: ['table', 'headphones', 'book', 'book']
+2026-03-11 10:57:27,353 [INFO] color_pcl: 4 masks → PointCloud2
+2026-03-11 10:57:27,437 [INFO] Detection complete: 4 objects
+2026-03-11 10:57:49,071 [INFO] === PUBLISH_OBJECTS COMPLETED ===
+2026-03-11 10:57:55,077 [INFO] Robot stationary long enough — starting new perception cycle.
+2026-03-11 10:57:55,078 [INFO] === New perception cycle started ===
+2026-03-11 10:57:55,079 [INFO] === START DETECTION ===
+2026-03-11 10:58:02,202 [INFO] VLM labels (3): ['table', 'headphones', 'book']
+2026-03-11 10:58:13,590 [INFO] OWLv2 detected 3 objects: ['table', 'headphones', 'book']
+2026-03-11 10:58:13,591 [INFO] After NMS: 3 objects: ['table', 'headphones', 'book']
+2026-03-11 10:58:17,202 [INFO] color_pcl: 3 masks → PointCloud2
+2026-03-11 10:58:17,257 [INFO] Detection complete: 3 objects
+2026-03-11 10:58:37,919 [INFO] === PUBLISH_OBJECTS COMPLETED ===
+2026-03-11 10:58:44,077 [INFO] Robot stationary long enough — starting new perception cycle.
+2026-03-11 10:58:44,078 [INFO] === New perception cycle started ===
+2026-03-11 10:58:44,081 [INFO] === START DETECTION ===
+2026-03-11 10:58:51,831 [INFO] VLM labels (3): ['table', 'headphones', 'book']
+2026-03-11 10:59:03,403 [INFO] OWLv2 detected 4 objects: ['table', 'headphones', 'book', 'book']
+2026-03-11 10:59:03,404 [INFO] After NMS: 4 objects: ['table', 'headphones', 'book', 'book']
+2026-03-11 10:59:07,750 [INFO] color_pcl: 4 masks → PointCloud2
+2026-03-11 10:59:07,825 [INFO] Detection complete: 4 objects
+2026-03-11 10:59:34,676 [INFO] === PUBLISH_OBJECTS COMPLETED ===
+2026-03-11 10:59:41,078 [INFO] Robot stationary long enough — starting new perception cycle.
+2026-03-11 10:59:41,078 [INFO] === New perception cycle started ===
+2026-03-11 10:59:41,080 [INFO] === START DETECTION ===
+2026-03-11 10:59:48,018 [INFO] VLM labels (3): ['table', 'headphones', 'book']
+2026-03-11 10:59:58,066 [INFO] OWLv2 detected 3 objects: ['table', 'book', 'headphones']
+2026-03-11 10:59:58,067 [INFO] After NMS: 3 objects: ['table', 'book', 'headphones']
+2026-03-11 11:00:02,099 [INFO] color_pcl: 3 masks → PointCloud2
+2026-03-11 11:00:02,152 [INFO] Detection complete: 3 objects
+2026-03-11 11:00:22,308 [INFO] === PUBLISH_OBJECTS COMPLETED ===
+2026-03-11 11:00:28,577 [INFO] Robot stationary long enough — starting new perception cycle.
+2026-03-11 11:00:28,578 [INFO] === New perception cycle started ===
+2026-03-11 11:00:28,579 [INFO] === START DETECTION ===
+2026-03-11 11:00:35,674 [INFO] VLM labels (2): ['table', 'book']
+2026-03-11 11:00:46,824 [INFO] OWLv2 detected 2 objects: ['table', 'book']
+2026-03-11 11:00:46,825 [INFO] After NMS: 2 objects: ['table', 'book']
+2026-03-11 11:00:49,095 [INFO] color_pcl: 2 masks → PointCloud2
+2026-03-11 11:00:49,147 [INFO] Detection complete: 2 objects
+2026-03-11 11:01:15,167 [INFO] === PUBLISH_OBJECTS COMPLETED ===
+2026-03-11 11:01:21,577 [INFO] Robot stationary long enough — starting new perception cycle.
+2026-03-11 11:01:21,578 [INFO] === New perception cycle started ===
+2026-03-11 11:01:21,579 [INFO] === START DETECTION ===
+2026-03-11 11:01:26,247 [INFO] VLM labels (1): ['table']
+2026-03-11 11:01:37,284 [INFO] OWLv2 detected 1 objects: ['table']
+2026-03-11 11:01:37,284 [INFO] After NMS: 1 objects: ['table']
+2026-03-11 11:01:38,716 [INFO] color_pcl: 1 masks → PointCloud2
+2026-03-11 11:01:38,743 [INFO] Detection complete: 1 objects
+2026-03-11 11:01:56,436 [INFO] === PUBLISH_OBJECTS COMPLETED ===
+2026-03-11 11:02:02,577 [INFO] Robot stationary long enough — starting new perception cycle.
+2026-03-11 11:02:02,578 [INFO] === New perception cycle started ===
+2026-03-11 11:02:02,579 [INFO] === START DETECTION ===
+2026-03-11 11:02:08,848 [INFO] VLM labels (1): ['table']

@@ -1,0 +1,9 @@
+sara_bag/
+api.txt
+__pycache__/
+*.pyc
+build/
+install/
+log/
+utils/
+lost3dsg/word2vec-google-news-300/

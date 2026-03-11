@@ -1,0 +1,275 @@
+2026-03-10 21:22:35,214 [INFO] === ObjectManagerNode Initialized ===
+2026-03-10 21:22:35,316 [WARNING] ============================================================
+2026-03-10 21:22:35,316 [WARNING] [EXPLORATION] The robot is in EXPLORATION.
+2026-03-10 21:22:35,317 [WARNING] [EXPLORATION] Will switch to TRACKING when an object is seen again.
+2026-03-10 21:22:35,317 [WARNING] ============================================================
+2026-03-10 21:22:45,255 [DEBUG] [FOV] Received FOV from depth: X[0.75, -1.73], Y[-0.20, 2.46], Z[0.56, 1.03]
+2026-03-10 21:22:45,635 [INFO] Saved 1 objects to persistent_perception.json
+2026-03-10 21:22:45,636 [INFO] Saved object labels: ['table']
+2026-03-10 21:22:45,636 [DEBUG]   - table: The tabletop shows a pronounced chip at the front-left corner with exposed underlying layers and several dark scuff marks and small stains scattered across the surface, most noticeable near the edges. There are also tiny puncture-like indentations and faint surface abrasions along the top that distinguish this table from a plain, unmarked top.
+2026-03-10 21:22:46,234 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_exploration_001.json
+2026-03-10 21:22:46,639 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_exploration_001.png
+2026-03-10 21:22:46,779 [INFO] Saved 2 objects to persistent_perception.json
+2026-03-10 21:22:46,780 [INFO] Saved object labels: ['table', 'headphones']
+2026-03-10 21:22:46,780 [DEBUG]   - table: The tabletop shows a pronounced chip at the front-left corner with exposed underlying layers and several dark scuff marks and small stains scattered across the surface, most noticeable near the edges. There are also tiny puncture-like indentations and faint surface abrasions along the top that distinguish this table from a plain, unmarked top.
+2026-03-10 21:22:46,780 [DEBUG]   - headphones: Each oval ear cup has a smooth outer surface with no visible logos, ports, or control buttons, resulting in a minimalist uninterrupted exterior. The headband shows thick, integrated padding along the inner arch and connects to the cups in a continuous, hinge-less form that suggests a one-piece, non-folding construction.
+2026-03-10 21:22:46,780 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_exploration_002.json
+2026-03-10 21:22:47,151 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_exploration_002.png
+2026-03-10 21:22:47,311 [INFO] Saved 3 objects to persistent_perception.json
+2026-03-10 21:22:47,311 [INFO] Saved object labels: ['table', 'headphones', 'book#1']
+2026-03-10 21:22:47,312 [DEBUG]   - table: The tabletop shows a pronounced chip at the front-left corner with exposed underlying layers and several dark scuff marks and small stains scattered across the surface, most noticeable near the edges. There are also tiny puncture-like indentations and faint surface abrasions along the top that distinguish this table from a plain, unmarked top.
+2026-03-10 21:22:47,312 [DEBUG]   - headphones: Each oval ear cup has a smooth outer surface with no visible logos, ports, or control buttons, resulting in a minimalist uninterrupted exterior. The headband shows thick, integrated padding along the inner arch and connects to the cups in a continuous, hinge-less form that suggests a one-piece, non-folding construction.
+2026-03-10 21:22:47,312 [DEBUG]   - book#1: The front cover includes a lighter band along the top with small printed text or a logo and a small square white sticker near the lower-right corner of the cover. The book displays a very thick block of visible pages with slightly yellowed edges and a subtly curved fore-edge, while the spine bears small printed publisher markings near the top.
+2026-03-10 21:22:47,312 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_exploration_003.json
+2026-03-10 21:22:47,715 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_exploration_003.png
+2026-03-10 21:22:47,859 [INFO] Saved 4 objects to persistent_perception.json
+2026-03-10 21:22:47,860 [INFO] Saved object labels: ['table', 'headphones', 'book#1', 'book#2']
+2026-03-10 21:22:47,860 [DEBUG]   - table: The tabletop shows a pronounced chip at the front-left corner with exposed underlying layers and several dark scuff marks and small stains scattered across the surface, most noticeable near the edges. There are also tiny puncture-like indentations and faint surface abrasions along the top that distinguish this table from a plain, unmarked top.
+2026-03-10 21:22:47,860 [DEBUG]   - headphones: Each oval ear cup has a smooth outer surface with no visible logos, ports, or control buttons, resulting in a minimalist uninterrupted exterior. The headband shows thick, integrated padding along the inner arch and connects to the cups in a continuous, hinge-less form that suggests a one-piece, non-folding construction.
+2026-03-10 21:22:47,860 [DEBUG]   - book#1: The front cover includes a lighter band along the top with small printed text or a logo and a small square white sticker near the lower-right corner of the cover. The book displays a very thick block of visible pages with slightly yellowed edges and a subtly curved fore-edge, while the spine bears small printed publisher markings near the top.
+2026-03-10 21:22:47,860 [DEBUG]   - book#2: Cover shows the text '3ds max 5' printed along the lower front in a small sans-serif typeface. The upper cover contains a monochrome photographic or abstract image with vertical and diagonal elements, and the fore-edge reveals compact stacked pages indicating a slim volume.
+2026-03-10 21:22:47,861 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_exploration_004.json
+2026-03-10 21:22:48,216 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_exploration_004.png
+2026-03-10 21:23:26,978 [WARNING] [EXPLORATION] Manual interruption received - switching to TRACKING mode...
+2026-03-10 21:23:26,978 [WARNING] ============================================================
+2026-03-10 21:23:26,978 [WARNING] [EXPLORATION] Exploration phase ENDED!
+2026-03-10 21:23:26,979 [WARNING] [EXPLORATION] An object has been SEEN AGAIN - switching to TRACKING
+2026-03-10 21:23:26,979 [WARNING] [TRACKING] Tracking mode ACTIVATED
+2026-03-10 21:23:26,979 [WARNING] ============================================================
+2026-03-10 21:23:27,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:23:29,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:23:31,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:23:31,774 [DEBUG] [FOV] Received FOV from depth: X[0.76, -1.73], Y[-0.20, 2.61], Z[0.56, 1.36]
+2026-03-10 21:23:32,966 [INFO] Saved 0 uncertain objects in uncertain_objects.txt
+2026-03-10 21:23:32,967 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_tracking_001.json
+2026-03-10 21:23:33,313 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_tracking_001.png
+2026-03-10 21:23:33,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:23:35,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:23:37,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:23:39,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:23:41,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:23:43,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:23:45,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:23:47,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:23:49,317 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:23:51,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:23:53,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:23:55,318 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:23:57,316 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:23:59,317 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:01,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:03,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:05,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:07,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:09,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:11,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:13,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:15,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:15,710 [DEBUG] [FOV] Received FOV from depth: X[0.76, -1.73], Y[-0.20, 2.58], Z[0.54, 1.29]
+2026-03-10 21:24:16,478 [INFO] Saved 0 uncertain objects in uncertain_objects.txt
+2026-03-10 21:24:16,479 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_tracking_002.json
+2026-03-10 21:24:16,820 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_tracking_002.png
+2026-03-10 21:24:17,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:19,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:21,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:23,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:25,317 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:27,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:29,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:31,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:33,316 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:35,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:37,319 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:39,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:41,317 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:43,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:45,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:47,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:49,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:51,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:53,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:55,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:56,264 [DEBUG] [FOV] Received FOV from depth: X[0.82, -1.73], Y[-0.19, 2.58], Z[0.30, 1.28]
+2026-03-10 21:24:56,708 [INFO] Saved 0 uncertain objects in uncertain_objects.txt
+2026-03-10 21:24:56,709 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_tracking_003.json
+2026-03-10 21:24:57,097 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_tracking_003.png
+2026-03-10 21:24:57,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:24:59,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:01,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:03,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:05,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:07,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:09,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:11,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:13,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:15,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:17,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:19,320 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:21,316 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:23,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:25,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:27,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:29,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:31,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:33,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:35,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:37,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:25:38,190 [DEBUG] [FOV] Received FOV from depth: X[0.74, -1.73], Y[-0.21, 2.70], Z[0.62, 1.57]
+2026-03-10 21:25:38,469 [INFO] Saved 5 objects to persistent_perception.json
+2026-03-10 21:25:38,470 [INFO] Saved object labels: ['table', 'book#1', 'book#2', 'headphones', 'book']
+2026-03-10 21:25:38,470 [DEBUG]   - table: The tabletop shows a pronounced chip at the front-left corner with exposed underlying layers and several dark scuff marks and small stains scattered across the surface, most noticeable near the edges. There are also tiny puncture-like indentations and faint surface abrasions along the top that distinguish this table from a plain, unmarked top.
+2026-03-10 21:25:38,470 [DEBUG]   - book#1: The front cover includes a lighter band along the top with small printed text or a logo and a small square white sticker near the lower-right corner of the cover. The book displays a very thick block of visible pages with slightly yellowed edges and a subtly curved fore-edge, while the spine bears small printed publisher markings near the top.
+2026-03-10 21:25:38,470 [DEBUG]   - book#2: Cover shows the text '3ds max 5' printed along the lower front in a small sans-serif typeface. The upper cover contains a monochrome photographic or abstract image with vertical and diagonal elements, and the fore-edge reveals compact stacked pages indicating a slim volume.
+2026-03-10 21:25:38,470 [DEBUG]   - headphones: This over-ear headphone displays thick, rounded ear cushions with a smooth, seamless outer shell and a broad padded headband, with no visible logos or printed text. The earcups are slightly oval and angled inward, connected by a solid band without exposed hinges, adjustment sliders, or visible cables, creating a compact minimalist silhouette.
+2026-03-10 21:25:38,470 [DEBUG]   - book: Front cover displays a large solid rectangular panel occupying the central area with a small white square logo or barcode near the lower-right corner of this panel and a thin header with printed black text along the top edge. A thick block of visible pages forms a rounded fore-edge, and the spine's upper area shows small printed characters and a narrow white strip.
+2026-03-10 21:25:38,472 [INFO] Saved 0 uncertain objects in uncertain_objects.txt
+2026-03-10 21:25:38,473 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_tracking_004.json
+2026-03-10 21:25:38,815 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_tracking_004.png
+2026-03-10 21:25:39,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:25:41,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:25:43,316 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:25:45,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:25:47,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:25:49,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:25:51,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:25:53,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:25:55,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:25:57,318 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:25:59,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:01,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:03,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:05,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:07,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:09,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:11,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:13,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:15,231 [DEBUG] [FOV] Received FOV from depth: X[0.75, -1.73], Y[-0.21, 2.46], Z[0.56, 1.03]
+2026-03-10 21:26:15,549 [INFO] Saved 0 uncertain objects in uncertain_objects.txt
+2026-03-10 21:26:15,550 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_tracking_005.json
+2026-03-10 21:26:15,859 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_tracking_005.png
+2026-03-10 21:26:15,859 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:17,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:19,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:21,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:23,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:25,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:27,316 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:29,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:31,317 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:33,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:35,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:37,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:39,317 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:41,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:43,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:45,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:47,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:49,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:51,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:53,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:54,020 [DEBUG] [FOV] Received FOV from depth: X[0.75, -1.72], Y[-0.21, 2.46], Z[0.56, 1.03]
+2026-03-10 21:26:54,290 [INFO] Saved 0 uncertain objects in uncertain_objects.txt
+2026-03-10 21:26:54,291 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_tracking_006.json
+2026-03-10 21:26:54,623 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_tracking_006.png
+2026-03-10 21:26:55,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:57,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:26:59,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:01,318 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:03,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:05,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:07,316 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:09,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:11,316 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:13,316 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:15,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:17,316 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:19,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:21,318 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:23,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:25,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:27,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:29,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:31,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:31,902 [DEBUG] [FOV] Received FOV from depth: X[0.75, -1.72], Y[-0.21, 2.46], Z[0.56, 1.03]
+2026-03-10 21:27:32,112 [INFO] Saved 0 uncertain objects in uncertain_objects.txt
+2026-03-10 21:27:32,112 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_tracking_007.json
+2026-03-10 21:27:32,790 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_tracking_007.png
+2026-03-10 21:27:33,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:35,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:37,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:39,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:41,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:43,317 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:45,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:47,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:49,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:51,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:53,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:55,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:57,318 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:27:59,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:01,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:03,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:05,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:07,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:09,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:11,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:13,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:15,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:17,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:18,424 [DEBUG] [FOV] Received FOV from depth: X[0.75, -1.72], Y[-0.21, 2.46], Z[0.56, 1.03]
+2026-03-10 21:28:19,277 [INFO] Saved 0 uncertain objects in uncertain_objects.txt
+2026-03-10 21:28:19,278 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_tracking_008.json
+2026-03-10 21:28:19,619 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_tracking_008.png
+2026-03-10 21:28:19,620 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:21,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:23,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:25,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:27,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:29,318 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:31,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:33,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:35,320 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:37,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:39,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:41,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:43,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:45,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:47,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:49,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:51,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:53,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:55,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:57,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:28:59,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:01,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:03,159 [DEBUG] [FOV] Received FOV from depth: X[0.75, -1.72], Y[-0.21, 2.46], Z[0.56, 1.03]
+2026-03-10 21:29:03,403 [INFO] Saved 0 uncertain objects in uncertain_objects.txt
+2026-03-10 21:29:03,404 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_tracking_009.json
+2026-03-10 21:29:03,788 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_tracking_009.png
+2026-03-10 21:29:03,789 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:05,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:07,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:09,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:11,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:13,316 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:15,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:17,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:19,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:21,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:23,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:25,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:27,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:29,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:31,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:33,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:35,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:37,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:39,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:41,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:43,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:45,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:47,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:49,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:51,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)
+2026-03-10 21:29:53,315 [DEBUG] [PERIODIC] Periodic publishing of bbox (5 objects)

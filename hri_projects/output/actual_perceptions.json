@@ -1,0 +1,1365 @@
+[
+    {
+        "label": "table",
+        "centroid": [
+            -0.027930399113711514,
+            0.10207128012825555,
+            0.9127203905476248
+        ],
+        "bbox": {
+            "x_min": 1.0044922649221006,
+            "x_max": 1.9456990087290205,
+            "y_min": -1.3123914003079435,
+            "y_max": -0.13041090203857997,
+            "z_min": 0.27083447918358416,
+            "z_max": 1.0144928694924347
+        },
+        "description": "The tabletop has a noticeably chipped front-left corner with torn laminate exposing underlying particleboard and several dark scuff marks and small stains scattered across the surface. The underside shows metal cylindrical legs bolted to the frame and faint adhesive residue along the perimeter, suggesting prior repairs or attachments.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "headphones",
+        "centroid": [
+            0.03255941379224434,
+            0.01918020242683437,
+            1.0627737226277338
+        ],
+        "bbox": {
+            "x_min": 1.4136839509072199,
+            "x_max": 1.6542498573637556,
+            "y_min": -0.8373461329392968,
+            "y_max": -0.6106123002173822,
+            "z_min": 0.6732472722501313,
+            "z_max": 0.8374754520776571
+        },
+        "description": "The headphones have a thick, continuous padded headband that flows into large, oval earcups with smooth, seamless outer shells and pronounced rounded cushions. No visible logos, hinges, or control buttons are present on the visible surfaces, creating a minimalist, monolithic appearance with a slightly squared-off band profile.",
+        "color": "black",
+        "material": "plastic",
+        "shape": "curved"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.28667858174782224,
+            0.022333992631657834,
+            0.9698947171924653
+        ],
+        "bbox": {
+            "x_min": 1.3928228290298983,
+            "x_max": 1.8056802913310963,
+            "y_min": -1.1154752943167998,
+            "y_max": -0.8593515593729014,
+            "z_min": 0.635757155930891,
+            "z_max": 0.9243390436306417
+        },
+        "description": "Front cover features a small rectangular sticker near the lower-right corner with a tiny square mark and upper-left printed publisher text and logo along the top edge. The fore-edge reveals densely packed pages indicating a thick volume, while the spine shows narrow printed text and slight wear at the lower corner.",
+        "color": "red",
+        "material": "paper",
+        "shape": "rectangular"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            -0.27948072472945557,
+            0.05640414115670642,
+            0.9331488166867448
+        ],
+        "bbox": {
+            "x_min": 1.2066893547588347,
+            "x_max": 1.592226860675876,
+            "y_min": -0.5890980000287549,
+            "y_max": -0.2692332416274795,
+            "z_min": 0.633776560686975,
+            "z_max": 0.8873320934924784
+        },
+        "description": "Cover prominently displays the printed title '3ds max 5' along the bottom edge beneath a high-contrast image of architectural/3D modeling elements. The spine shows a small publisher/author line and the lower page edges exhibit slight wear and compression, indicating use with visible page layering.",
+        "color": "black",
+        "material": "paper",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.06554046023585611,
+            0.10165301680163018,
+            0.9148499430333183
+        ],
+        "bbox": {
+            "x_min": 1.0027899436199943,
+            "x_max": 1.9337688456595468,
+            "y_min": -1.3085534551529245,
+            "y_max": -0.13693439398602902,
+            "z_min": 0.27714057091758904,
+            "z_max": 1.0114964323372084
+        },
+        "description": "The tabletop shows a chipped front-left corner with exposed underlying substrate and several small scuff marks and tiny spots across the surface. Distinctive items on its surface include a hardcover book with visible spine text '3ds max 5 FUNDAMENTALS' near the rear center, an additional thick book at the rear-right, and a pair of over-ear headphones positioned near the center-front.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "headphones",
+        "centroid": [
+            0.033404458095462046,
+            0.017817281520282016,
+            1.064581578947362
+        ],
+        "bbox": {
+            "x_min": 1.414871380082836,
+            "x_max": 1.6492764360600012,
+            "y_min": -0.8311807504144356,
+            "y_max": -0.613277682669527,
+            "z_min": 0.676643866372297,
+            "z_max": 0.8373085242726915
+        },
+        "description": "The headphones feature a continuous padded headband with a wide, slightly rectangular cushion showing a faint fabric-like texture and neat stitched seams along the edges. Each earcup has thick, rounded cushions with a smooth matte outer shell, no visible logos or buttons, and a small seam where the earcup meets the headband indicating a non-folding single-piece design.",
+        "color": "black",
+        "material": "plastic",
+        "shape": "curved"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.2869338046715277,
+            0.0226334894943108,
+            0.968904959456917
+        ],
+        "bbox": {
+            "x_min": 1.3930754305377566,
+            "x_max": 1.8244715780538754,
+            "y_min": -1.1215769939146072,
+            "y_max": -0.8563609360193462,
+            "z_min": 0.6286683228767769,
+            "z_max": 0.9296176960630614
+        },
+        "description": "The cover features a contrasting white top band with small black printed text along the upper edge and a plain solid main cover area with a small rectangular white barcode or price label at the lower right. The block of pages is very thick with slightly yellowed page edges and the spine exhibits a noticeable curved bulge toward the fore-edge, indicating heavy use or a large page count.",
+        "color": "brown",
+        "material": "paper",
+        "shape": "rectangular"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.014655919902405064,
+            -0.08777305197214244,
+            1.2095091669346854
+        ],
+        "bbox": {
+            "x_min": 1.6161587470635466,
+            "x_max": 1.8630734844225396,
+            "y_min": -0.7990143174025778,
+            "y_max": -0.5150472534758421,
+            "z_min": 0.7058876128506241,
+            "z_max": 0.8796024399001725
+        },
+        "description": "The spine and front cover display prominent typography reading '3ds max 5' and 'FUNDAMENTALS' with a horizontal accent bar along the lower edge. The cover shows a faint photographic or rendered background image and exhibits slight corner wear and surface reflections consistent with a used glossy paperback.",
+        "color": "black",
+        "material": "paper",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.0657676115530797,
+            0.09831255399476559,
+            0.9206856555974114
+        ],
+        "bbox": {
+            "x_min": 1.003838169444809,
+            "x_max": 1.9405802300156598,
+            "y_min": -1.3111022682705114,
+            "y_max": -0.13393826749633098,
+            "z_min": 0.2741961603892561,
+            "z_max": 1.0145651947162104
+        },
+        "description": "The tabletop exhibits chipped paint at the front-left edge revealing a layered core and several small dents and scuffs along the rim. Three small puncture marks sit near the right edge and visible mounting bolt impressions are present where the legs attach, plus faint circular wear patterns across the center consistent with repeated placement of objects.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "headphones",
+        "centroid": [
+            0.03048259062349595,
+            0.017601933303815785,
+            1.066249162759536
+        ],
+        "bbox": {
+            "x_min": 1.4175287637177916,
+            "x_max": 1.6492764360600012,
+            "y_min": -0.8305771268868416,
+            "y_max": -0.613277682669527,
+            "z_min": 0.676643866372297,
+            "z_max": 0.8360539522924505
+        },
+        "description": "The headphones feature a wide, seamlessly molded headband with no visible hinges or joints, ending in large, over-ear oval cushions that appear generously padded and contoured for full ear coverage. The outer earcup surfaces are smooth and unbranded with minimal visible seams or controls, presenting a minimalist, monolithic design and compact ergonomic profile.",
+        "color": "black",
+        "material": "plastic",
+        "shape": "curved"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.28688783012929175,
+            0.021754967798377788,
+            0.971254524886888
+        ],
+        "bbox": {
+            "x_min": 1.393260123252272,
+            "x_max": 1.8076610547543455,
+            "y_min": -1.1238627730321211,
+            "y_max": -0.8612032676281334,
+            "z_min": 0.6357924857818651,
+            "z_max": 0.9244990733611481
+        },
+        "description": "Front cover shows a small publisher logo and a line of printed text near the upper-left corner and a small square sticker or barcode near the lower-right corner. The book is a thick volume with densely packed pages visible at the fore-edge and a slightly worn, curved lower corner on the cover indicating handling.",
+        "color": "brown",
+        "material": "paper",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.05844864789488684,
+            0.06903499984707083,
+            0.978404622056335
+        ],
+        "bbox": {
+            "x_min": 0.9959976685233596,
+            "x_max": 2.0760132723408056,
+            "y_min": -1.3131555834702175,
+            "y_max": -0.08807443056946751,
+            "z_min": 0.2015119510165546,
+            "z_max": 1.0199016486858876
+        },
+        "description": "The tabletop displays worn edges with a prominent chip at the front-left corner, scattered surface scratches, and a faint rectangular mark near the top-center consistent with a removed label or adhesive. Four tubular legs are visible beneath the table with minor paint wear at their bases, and a single hardcover book with a small barcode sticker rests near the upper-right, serving as a distinguishing accessory that provides scale.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.2870474284966212,
+            0.021626681913467574,
+            0.9716320060388866
+        ],
+        "bbox": {
+            "x_min": 1.3930439746408636,
+            "x_max": 1.8071212515759092,
+            "y_min": -1.121608506337007,
+            "y_max": -0.8607660385973117,
+            "z_min": 0.6355298546236017,
+            "z_max": 0.9244554616121842
+        },
+        "description": "The front cover has a horizontal band at the top with small printed publisher text and a small square logo-like mark near the lower right corner. The volume shows a thick block of visible pages at the fore-edge with a slightly curved spine edge and minor wear on the cover corners and top edge.",
+        "color": "red",
+        "material": "paper",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.033153543270171275,
+            0.07291158738115816,
+            0.9727790519038825
+        ],
+        "bbox": {
+            "x_min": 0.995963710619442,
+            "x_max": 2.064450130625794,
+            "y_min": -1.315772735353638,
+            "y_max": -0.09329182482018272,
+            "z_min": 0.2096208057778186,
+            "z_max": 1.0193275874908794
+        },
+        "description": "The tabletop has a chipped front-left corner exposing a layered core, several dark scuff marks, and small adhesive residue patches with two visible recessed screw heads near the upper edge. Four cylindrical legs are attached beneath the surface with visible mounting brackets, and a small book with a blurred hand rests near the top edge indicating light wear from use.",
+        "color": "white",
+        "material": "laminate",
+        "shape": "rectangular"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.08860344676843203,
+            -0.05143710015322602,
+            1.1031710272652258
+        ],
+        "bbox": {
+            "x_min": 1.5152247292031178,
+            "x_max": 1.8014770673787373,
+            "y_min": -0.8844035064665159,
+            "y_max": -0.6260061978782101,
+            "z_min": 0.6949723858224847,
+            "z_max": 0.9180760132714463
+        },
+        "description": "The front cover shows a white rectangular sticker near the top edge with faint, indistinct markings and a small dark smudge adjacent to it. The book is a thick volume with densely packed page edges visible along the fore-edge, slight corner wear on the cover, and no visible printed title on the face.",
+        "color": "brown",
+        "material": "paper",
+        "shape": "rectangular"
+    },
+    {
+        "label": "person",
+        "centroid": [
+            -0.3509765401199078,
+            -0.3252241867861246,
+            1.2636062906724965
+        ],
+        "bbox": {
+            "x_min": 1.2668061004488604,
+            "x_max": 2.345474524461612,
+            "y_min": -0.7730612201995861,
+            "y_max": 0.060774414846018754,
+            "z_min": 0.052827419600781855,
+            "z_max": 1.2718613598656496
+        },
+        "description": "This person wears a fitted long-sleeve top and slim jeans featuring a brown rectangular leather patch on the back pocket and visible stitched pocket detailing. A narrow strap or tape hangs from the waist near the right hip and the left hand is resting on a tabletop; there are no visible logos or printed text on the clothing.",
+        "color": "black",
+        "material": "fabric",
+        "shape": "elongated"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.025300194362115364,
+            0.09299730280107599,
+            0.9392290664734243
+        ],
+        "bbox": {
+            "x_min": 0.9094821581914363,
+            "x_max": 2.1418141907869925,
+            "y_min": -1.4657560902661952,
+            "y_max": -0.09656827221053454,
+            "z_min": -0.024185695707793498,
+            "z_max": 1.0142160340805917
+        },
+        "description": "The tabletop surface has multiple scuffs and small dark scratches scattered across it, including a thin pen-like mark near the right edge and a faint circular stain toward the upper-left quadrant. The front-left corner is noticeably chipped, revealing a layered core, and the table stands on four evenly spaced cylindrical legs that show minor paint wear at their bases.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.025300194362115364,
+            0.09299730280107599,
+            0.9392290664734243
+        ],
+        "bbox": {
+            "x_min": 0.9094821581914363,
+            "x_max": 2.1418141907869925,
+            "y_min": -1.4657560902661952,
+            "y_max": -0.09656827221053454,
+            "z_min": -0.024185695707793498,
+            "z_max": 1.0142160340805917
+        },
+        "description": "The tabletop surface shows multiple chips and scuff marks along the edges and corners, including a distinct peeled area on the front-left edge that exposes a darker underlying layer. There is a small round stain near the top-right quadrant and faint scratch lines across the surface, plus slight edge separation at one corner.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.025300194362115364,
+            0.09299730280107599,
+            0.9392290664734243
+        ],
+        "bbox": {
+            "x_min": 0.9094821581914363,
+            "x_max": 2.1418141907869925,
+            "y_min": -1.4657560902661952,
+            "y_max": -0.09656827221053454,
+            "z_min": -0.024185695707793498,
+            "z_max": 1.0142160340805917
+        },
+        "description": "The tabletop displays multiple surface abrasions and small dark scuff marks, with a prominent chip at the front-left corner revealing underlying material and slightly lifted laminate in that area. The piece is mounted on four round tubular legs that show visible paint wear near the bases and there are a few small circular adhesive-like residues and scratches along the rear edge of the top.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.027343393814336796,
+            0.10597387665728233,
+            0.9053508721140695
+        ],
+        "bbox": {
+            "x_min": 1.004187168878112,
+            "x_max": 1.944474108726388,
+            "y_min": -1.3108168905760265,
+            "y_max": -0.13015693923190375,
+            "z_min": 0.27039783901571923,
+            "z_max": 1.0125684833831037
+        },
+        "description": "A torn strip of adhesive tape is affixed to the front-left corner with curled edges and visible residue, suggesting past repair or reinforcement. Several small scuffs, a noticeable rectangular abrasion near the top-right surface, faint pen marks, and a few dark smudges indicate frequent use and prior attached labels.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "headphones",
+        "centroid": [
+            0.03149832542554336,
+            0.019344873430368285,
+            1.0617638617090626
+        ],
+        "bbox": {
+            "x_min": 1.4141661396249037,
+            "x_max": 1.6477612356851414,
+            "y_min": -0.8287210397258691,
+            "y_max": -0.6137125550332918,
+            "z_min": 0.6749589918550444,
+            "z_max": 0.8352643795286296
+        },
+        "description": "Large over-ear style with thick oval ear cushions and a wide headband molded as a single continuous piece, presenting a minimalist seamless profile. No visible logos, buttons, or markings on the exterior; outer surfaces are smooth and uninterrupted and the ear cups sit on short, slightly angled yokes allowing compact positioning.",
+        "color": "black",
+        "material": "plastic",
+        "shape": "curved"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.28748201981299176,
+            0.0237408245066249,
+            0.9661737962785325
+        ],
+        "bbox": {
+            "x_min": 1.39290157634891,
+            "x_max": 1.8055126103398536,
+            "y_min": -1.1187889594746452,
+            "y_max": -0.8599502522634388,
+            "z_min": 0.6357635180799955,
+            "z_max": 0.922261917673262
+        },
+        "description": "The front cover displays printed text along the top-left edge and a small rectangular sticker with a barcode-like mark near the lower-right corner. The book has a very thick block of pages with a slightly curved fore-edge and a visible spine area that contains additional small printed markings.",
+        "color": "brown",
+        "material": "paper",
+        "shape": "rectangular"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            -0.2794524453189844,
+            0.05629459805981142,
+            0.9332348716584841
+        ],
+        "bbox": {
+            "x_min": 1.2066893547588347,
+            "x_max": 1.592226860675876,
+            "y_min": -0.5890980000287549,
+            "y_max": -0.2692332416274795,
+            "z_min": 0.633776560686975,
+            "z_max": 0.8873320934924784
+        },
+        "description": "The cover features a partial grayscale graphic of vertical shapes near the top and bold white text reading '3ds max 5' along the lower right corner. The fore-edge exposes densely stacked white pages with a slight bend at the lower corner and a subtle glossy reflection on the cover.",
+        "color": "black",
+        "material": "paper",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.02648020084578763,
+            0.10476540276262429,
+            0.9077162152453534
+        ],
+        "bbox": {
+            "x_min": 1.0036154561521817,
+            "x_max": 1.9456990087290205,
+            "y_min": -1.3124443551198195,
+            "y_max": -0.1275014112083348,
+            "z_min": 0.2703516492323338,
+            "z_max": 1.0144928694924347
+        },
+        "description": "The tabletop shows chipped and peeling veneer at the front-left corner with a strip of residual adhesive tape and several small scuff marks along the edges, and there are faint dark stains near the upper-right area. Three distinct objects sit on its surface in a row: on the left a softcover book with visible title '3ds max 5', in the center a pair of over-ear headphones, and on the right a thick hardcover book with a brown dust jacket and a small barcode sticker on the top-right corner.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "headphones",
+        "centroid": [
+            0.03295585067136767,
+            0.020198808448184554,
+            1.0599405405405369
+        ],
+        "bbox": {
+            "x_min": 1.4113713663915424,
+            "x_max": 1.648815122143023,
+            "y_min": -0.8337493344753739,
+            "y_max": -0.6118561372445591,
+            "z_min": 0.6736063828467931,
+            "z_max": 0.8361859063860411
+        },
+        "description": "A single-piece over-ear headphone design with a wide, uniformly padded headband that extends into thick, oval-shaped ear cushions and shows no visible articulation or folding hinges. The earcup surfaces are smooth and featureless with a subtle matte texture and a minimalist, seamless construction that gives the set a clean, modern silhouette and slightly squared oval cushions.",
+        "color": "black",
+        "material": "plastic",
+        "shape": "curved"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.2866050045786554,
+            0.022662889390544734,
+            0.9691997734139016
+        ],
+        "bbox": {
+            "x_min": 1.39290157634891,
+            "x_max": 1.8055018420406,
+            "y_min": -1.1147196565620658,
+            "y_max": -0.8596850123508524,
+            "z_min": 0.6357635180799955,
+            "z_max": 0.9243246263652924
+        },
+        "description": "The cover features a large plain central panel with a small white square sticker containing a barcode in the lower-right corner and a narrow white publisher strip near the top-left with tiny black printed text. The thick page block shows slightly yellowed edges and the spine exhibits a subtle concave curve, giving the book a gently warped profile with a glossy cover finish.",
+        "color": "brown",
+        "material": "paper",
+        "shape": "rectangular"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            -0.27935135674655664,
+            0.05632704056998273,
+            0.9336367785235131
+        ],
+        "bbox": {
+            "x_min": 1.2066893547588347,
+            "x_max": 1.5921347397538064,
+            "y_min": -0.5887079169607696,
+            "y_max": -0.2692332416274795,
+            "z_min": 0.633776560686975,
+            "z_max": 0.8873246508639647
+        },
+        "description": "Front cover prominently shows the printed text '3ds max 5' with a smaller line of subtitle text directly beneath it, positioned toward the lower portion of the cover. The upper cover area contains a high-contrast abstract photographic image with vertical linear elements, and the fore-edge reveals stacked pages with slight corner wear visible on the bottom edge.",
+        "color": "black",
+        "material": "paper",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.06873984566720487,
+            0.10199839084679896,
+            0.9140603399831514
+        ],
+        "bbox": {
+            "x_min": 1.0030524738023059,
+            "x_max": 1.9398036127707239,
+            "y_min": -1.3110932848964338,
+            "y_max": -0.13751921722852756,
+            "z_min": 0.274679360055858,
+            "z_max": 1.0138366622682748
+        },
+        "description": "The tabletop has a noticeable chip at the front-left corner where the top layer is peeled back, revealing a layered core and frayed edge material, and there are several small dark scuff marks and ink-like dots scattered across the surface. Near the top-right edge is a small round adhesive residue or sticker and multiple superficial scratches parallel to the front edge, with two tubular legs attached underneath showing visible mounting points.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "headphones",
+        "centroid": [
+            0.030535609820910945,
+            0.017883226911303278,
+            1.0643719552337
+        ],
+        "bbox": {
+            "x_min": 1.4175287637177916,
+            "x_max": 1.6487180339645924,
+            "y_min": -0.8282125912563583,
+            "y_max": -0.613277682669527,
+            "z_min": 0.676643866372297,
+            "z_max": 0.8360088379008005
+        },
+        "description": "The ear cups have smooth, seamless outer shells with thick cushioned pads and a slightly flattened outer profile that gives them a compact, modern look. There are no visible logos, markings, buttons, or cables on the exterior, suggesting a minimalist or wireless design, and the headband reveals internal padding visible at the band opening.",
+        "color": "black",
+        "material": "plastic",
+        "shape": "curved"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.2867144792542954,
+            0.021872111202376348,
+            0.9707823629169149
+        ],
+        "bbox": {
+            "x_min": 1.3931568684719944,
+            "x_max": 1.8056312215465824,
+            "y_min": -1.1192912147970935,
+            "y_max": -0.8610312785098981,
+            "z_min": 0.6357841436272861,
+            "z_max": 0.9222715005034099
+        },
+        "description": "The cover displays a diagonal two-tone design with a solid lower panel and a contrasting upper triangular panel across the front. A small square sticker with a barcode-like mark is affixed near the lower corner and there is printed publisher text on the spine and top edge, while the page block appears tightly packed with visible page edges.",
+        "color": "red",
+        "material": "paper",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.026512209171152743,
+            0.10298619756754208,
+            0.9109784024925741
+        ],
+        "bbox": {
+            "x_min": 1.0038574881479216,
+            "x_max": 1.9409063962780053,
+            "y_min": -1.3111092163130575,
+            "y_max": -0.13263736286257966,
+            "z_min": 0.27086972248139196,
+            "z_max": 1.0144634903315088
+        },
+        "description": "The tabletop shows a chipped front-left corner with peeling veneer and adhesive residue, plus multiple small dark scuff marks and a faint rectangular impression near the right side. The surface also has several ink-like spots and smudges, and the four slender cylindrical legs exhibit visible paint chips and uneven attachment points at their undersides.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "headphones",
+        "centroid": [
+            0.028849866966436405,
+            0.01865405190127894,
+            1.061317410433682
+        ],
+        "bbox": {
+            "x_min": 1.4138242974494517,
+            "x_max": 1.651374560892473,
+            "y_min": -0.825143828645631,
+            "y_max": -0.6107976949736865,
+            "z_min": 0.6734683167302802,
+            "z_max": 0.837243151281901
+        },
+        "description": "Oversized rounded oval ear cushions with prominent stitched seams and deep recessed cup profiles indicate thick padding and a contoured fit. The wide, lightly padded headband has a smooth outer surface and minimalist construction with no visible logos, exposed hinges, or external controls.",
+        "color": "black",
+        "material": "plastic",
+        "shape": "curved"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.2865661617402801,
+            0.02315601859441881,
+            0.9687111906556193
+        ],
+        "bbox": {
+            "x_min": 1.3928228290298983,
+            "x_max": 1.80460511685582,
+            "y_min": -1.1109225027411935,
+            "y_max": -0.8593515593729014,
+            "z_min": 0.635757155930891,
+            "z_max": 0.9242521781930502
+        },
+        "description": "The front cover includes a horizontal band near the top containing small printed text at the upper-left and a small square sticker or logo near the lower-right corner of the cover. The book displays a thick, tightly packed page block with a slightly rounded fore-edge and a visible fold where the cover wraps around the spine.",
+        "color": "red",
+        "material": "paper",
+        "shape": "rectangular"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            -0.27962786266729267,
+            0.05631630350820328,
+            0.9330706666666868
+        ],
+        "bbox": {
+            "x_min": 1.2066893547588347,
+            "x_max": 1.59218001732917,
+            "y_min": -0.5890980000287549,
+            "y_max": -0.2692463171632571,
+            "z_min": 0.633776560686975,
+            "z_max": 0.8872265806593697
+        },
+        "description": "Cover displays the text '3ds max 5' along the lower area beneath a high-contrast photographic or abstract image that occupies the upper portion of the front. The spine shows visible printed text and the book has a slightly thick paperback profile with discernible page edges and a narrow border along the bottom.",
+        "color": "black",
+        "material": "paper",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.02714096983689044,
+            0.10167411702478808,
+            0.9131938530946093
+        ],
+        "bbox": {
+            "x_min": 1.002882179621585,
+            "x_max": 1.9408652731018612,
+            "y_min": -1.310935081552406,
+            "y_max": -0.12850745042099143,
+            "z_min": 0.2707909254081028,
+            "z_max": 1.0144601679101037
+        },
+        "description": "The tabletop surface has a chipped front-left corner exposing the substrate, several scuff marks and small dark stains scattered across the top, and two small circular fastener indentations near the right-rear edge. Four cylindrical legs are mounted with visible screw heads along the underside seam and show abrasion at their bases, indicating a utilitarian assembled design with evident wear.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "headphones",
+        "centroid": [
+            0.0335903275041334,
+            0.01913252139412676,
+            1.0621359536082435
+        ],
+        "bbox": {
+            "x_min": 1.4142183381953686,
+            "x_max": 1.6478077254847006,
+            "y_min": -0.825143828645631,
+            "y_max": -0.613277682669527,
+            "z_min": 0.6751729146890639,
+            "z_max": 0.8371898642879612
+        },
+        "description": "The earcups display a rounded-rectangular profile with thick, pillowy cushions and smooth outer seams, and there are no visible logos, printed text, or decorative patterns on any external surface. The headband is a wide, continuous piece with a clean hinge-less appearance and subtle stitching or seam along its underside, and no cable, control buttons, or connector ports are visible in the photographed view.",
+        "color": "black",
+        "material": "plastic",
+        "shape": "curved"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.28660810879520016,
+            0.022521352004149186,
+            0.9700881854154956
+        ],
+        "bbox": {
+            "x_min": 1.3932142833244332,
+            "x_max": 1.8063769719857667,
+            "y_min": -1.118820471897045,
+            "y_max": -0.8615111730490846,
+            "z_min": 0.6355436141934799,
+            "z_max": 0.924208858968114
+        },
+        "description": "The cover shows a small line of printed text and a publisher logo near the top edge and a small square sticker with barcode-like markings on the lower-right corner of the front. The volume is notably thick with a dense page block and a slightly bowed fore-edge visible along the open side, suggesting heavy use or a large reference book.",
+        "color": "brown",
+        "material": "paper",
+        "shape": "rectangular"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            -0.2798360584475951,
+            0.05598571705425929,
+            0.934512606157129
+        ],
+        "bbox": {
+            "x_min": 1.2066893547588347,
+            "x_max": 1.592226860675876,
+            "y_min": -0.5890980000287549,
+            "y_max": -0.2692332416274795,
+            "z_min": 0.633776560686975,
+            "z_max": 0.8873320934924784
+        },
+        "description": "The cover displays the printed title '3ds max 5' in clear lettering along with a dark photographic-style graphic of vertical curved streaks at the top. The lower edge reveals a visible white page block and a slightly worn corner, suggesting a thin, well-used paperback.",
+        "color": "black",
+        "material": "paper",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.06539850336084163,
+            0.10182703334303726,
+            0.9143616077429857
+        ],
+        "bbox": {
+            "x_min": 1.0018855985235415,
+            "x_max": 1.9396262972902147,
+            "y_min": -1.3112441758266307,
+            "y_max": -0.13561517410434798,
+            "z_min": 0.2750481188820445,
+            "z_max": 1.013855456642261
+        },
+        "description": "The tabletop exhibits a pronounced chip and peeling at the front-left corner revealing layered core material and rough torn edges, along with multiple small scuff marks and a faint pen-like streak near the right edge. There is a small square adhesive residue near the top-right area and a shallow circular indentation near the center consistent with objects having been placed there repeatedly.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "headphones",
+        "centroid": [
+            0.03385550403009768,
+            0.017441164977551594,
+            1.0634610668301605
+        ],
+        "bbox": {
+            "x_min": 1.414958198490124,
+            "x_max": 1.6491731882045384,
+            "y_min": -0.8307435507065193,
+            "y_max": -0.6136453124099993,
+            "z_min": 0.6766508806003256,
+            "z_max": 0.8373001826775817
+        },
+        "description": "The headphones feature a wide, heavily cushioned headband that seamlessly transitions into large oval earcups with deep padding, creating a bulky over-ear profile. There are no visible logos, external controls, or wires on the outer earcup faces, and the exterior displays a smooth, matte finish with minimal seams and a streamlined single-band construction suggesting a wireless design.",
+        "color": "black",
+        "material": "plastic",
+        "shape": "curved"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.2873665061202711,
+            0.022765105889176355,
+            0.9687967636293606
+        ],
+        "bbox": {
+            "x_min": 1.3925839348687206,
+            "x_max": 1.8239317748754391,
+            "y_min": -1.1192912147970935,
+            "y_max": -0.8542797134895245,
+            "z_min": 0.6286286139854789,
+            "z_max": 0.9295740843140975
+        },
+        "description": "The cover is divided into a narrow upper band with small printed publisher text and logo and a larger lower panel exhibiting a subtle glossy finish. A small square sticker with printed markings is affixed to the lower-right corner of the front cover, and the spine bears a tiny printed logo and serial text near its top edge.",
+        "color": "brown",
+        "material": "paper",
+        "shape": "rectangular"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.015071059762843054,
+            -0.0835618266324056,
+            1.206628475711877
+        ],
+        "bbox": {
+            "x_min": 1.6154724041421074,
+            "x_max": 1.8648659684982791,
+            "y_min": -0.7990143174025778,
+            "y_max": -0.5118708489936072,
+            "z_min": 0.7037412085703306,
+            "z_max": 0.8736638508283667
+        },
+        "description": "The spine prominently shows the printed title '3ds max 5' with the word 'FUNDAMENTALS' in uppercase beneath it, both in bold sans-serif type. A narrow white rectangular publisher block and a small white icon or logo are visible at the base of the spine, and a partial image of a software interface appears on the adjacent cover edge.",
+        "color": "black",
+        "material": "paper",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.06885725031954118,
+            0.09889760595481821,
+            0.9197832004399311
+        ],
+        "bbox": {
+            "x_min": 1.0044120981115374,
+            "x_max": 1.94132653865334,
+            "y_min": -1.3128813475836503,
+            "y_max": -0.13627750604135214,
+            "z_min": 0.2742425292028098,
+            "z_max": 1.0153338157715528
+        },
+        "description": "The front-left tabletop corner is chipped, exposing the inner layered material and leaving a rough, uneven edge. The surface shows scattered dark scuff marks and a few small brownish stains toward the right side near where a book rests, and the legs exhibit minor wear at their bases.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "headphones",
+        "centroid": [
+            0.029673909719964937,
+            0.01820054189203727,
+            1.0646329365079277
+        ],
+        "bbox": {
+            "x_min": 1.417384083146919,
+            "x_max": 1.6491731882045384,
+            "y_min": -0.8301925334346867,
+            "y_max": -0.6134630774258313,
+            "z_min": 0.6762228982651464,
+            "z_max": 0.8360456106973406
+        },
+        "description": "Features large, oval ear cushions with thick, plush padding and seamless outer shells that attach to a wide padded headband without exposed hinges or visible adjustment sliders. The exterior displays a minimalistic, unbranded surface with subtle seam lines and a uniform matte finish; there are no visible control buttons, ports, or logos, resulting in a streamlined, low-profile appearance.",
+        "color": "black",
+        "material": "plastic",
+        "shape": "curved"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.2860541061424617,
+            0.022264234615493702,
+            0.9706513488372207
+        ],
+        "bbox": {
+            "x_min": 1.3930839521177085,
+            "x_max": 1.8065903389055162,
+            "y_min": -1.1043253878467798,
+            "y_max": -0.8596524452809624,
+            "z_min": 0.6341054899328443,
+            "z_max": 0.9241263078863101
+        },
+        "description": "The dust jacket features a large solid cover panel with a narrow top band bearing small printed publisher text and a tiny logo in the upper-left area. A small rectangular label or barcode sticker is adhered near the lower-right corner of the front, and the thick text block shows slightly uneven page edges indicating a heavy volume.",
+        "color": "brown",
+        "material": "paper",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.05920476218631418,
+            0.06880485795319202,
+            0.9789217724288981
+        ],
+        "bbox": {
+            "x_min": 0.9960075584575743,
+            "x_max": 2.076356180638858,
+            "y_min": -1.3130071626067026,
+            "y_max": -0.08801080826420637,
+            "z_min": 0.2015127500435805,
+            "z_max": 1.0207501548491489
+        },
+        "description": "A single thick paperback sits near the far-right corner of the tabletop, bearing a rectangular barcode sticker and printed text visible along its spine. The tabletop surface shows small chips and tape residue along the near-left edge and a faint rectangular impression near the center, with hollow cylindrical legs inserted at each corner.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.28577335881261384,
+            0.022256551310551646,
+            0.9716577918451046
+        ],
+        "bbox": {
+            "x_min": 1.392771185707275,
+            "x_max": 1.8049620388621634,
+            "y_min": -1.1124338774445521,
+            "y_max": -0.8591328773918998,
+            "z_min": 0.635752983566385,
+            "z_max": 0.9242810146163285
+        },
+        "description": "The cover shows a large rectangular solid-tone panel covering most of the front, with small printed publisher text and a logo near the top edge and a small square label in the lower-right corner. The book displays a thick block of pages with a slightly rounded fore-edge and a band of printed text across the upper spine.",
+        "color": "brown",
+        "material": "paper",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.057640278985773015,
+            0.06968416352764156,
+            0.9751751615219083
+        ],
+        "bbox": {
+            "x_min": 0.9992685966416108,
+            "x_max": 1.9473910381609967,
+            "y_min": -1.3161108068784477,
+            "y_max": -0.12252245976846443,
+            "z_min": 0.2669587195506108,
+            "z_max": 1.0176764478407747
+        },
+        "description": "The tabletop surface displays multiple edge imperfections including a repaired front-left corner with visible adhesive residue, several small scuff marks, and a shallow circular indentation near the center. Four cylindrical legs are mounted at the corners with minor wear at their lower sections, and a closed brown hardcover book rests near the rear-right corner of the top, providing an additional distinguishing element.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.2871486000939947,
+            0.02187434293066284,
+            0.9715181308411317
+        ],
+        "bbox": {
+            "x_min": 1.393327177155564,
+            "x_max": 1.8071212515759092,
+            "y_min": -1.1215769939146072,
+            "y_max": -0.8614872052150448,
+            "z_min": 0.6357979031971643,
+            "z_max": 0.9244554616121842
+        },
+        "description": "The front cover displays a large solid rectangular block occupying most of the face with a contrasting narrow band along the top and a small square label or barcode-like box near the lower-right corner. The spine shows printed text in a small font near the top band and the page edges are visibly thick and slightly aged, indicating a substantial volume.",
+        "color": "brown",
+        "material": "paper",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.02570016314604939,
+            0.09280334546452235,
+            0.9394132079194977
+        ],
+        "bbox": {
+            "x_min": 0.9097840077392316,
+            "x_max": 2.142157589220732,
+            "y_min": -1.468561705849679,
+            "y_max": -0.0979355347322074,
+            "z_min": -0.02416130869558386,
+            "z_max": 1.0135506507859022
+        },
+        "description": "The tabletop has several small scratches and scuff marks across its surface and a noticeable chip at the front-left corner partially covered by a strip of adhesive. Two visible tubular legs attach beneath the top with minor paint wear near their bottoms, and a small circular blemish or repair mark is present near the top-right edge of the surface.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.028720333107860756,
+            0.10205424682689467,
+            0.9126529461516867
+        ],
+        "bbox": {
+            "x_min": 1.0047088814124403,
+            "x_max": 1.9452111410035426,
+            "y_min": -1.311706680687044,
+            "y_max": -0.13141920141786767,
+            "z_min": 0.27085198005126254,
+            "z_max": 1.0137451283811816
+        },
+        "description": "The tabletop has a chipped front-left corner exposing layered core material and multiple small scuff marks and dark smudges along the front edge, indicating wear and possible adhesive residue. Four cylindrical legs are bolted to the underside and show minor abrasions near their bases; the surface holds two stacked books near each end and a pair of over-ear headphones near the center, giving it a used workspace appearance.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "headphones",
+        "centroid": [
+            0.033589840290273676,
+            0.020353519293993334,
+            1.0593803975325522
+        ],
+        "bbox": {
+            "x_min": 1.4123945505349333,
+            "x_max": 1.648815122143023,
+            "y_min": -0.8335861035647161,
+            "y_max": -0.6137125550332918,
+            "z_min": 0.6749589918550444,
+            "z_max": 0.8361859063860411
+        },
+        "description": "No visible logos, text, or branding appear on the outer ear cups, leaving smooth, uninterrupted surfaces. The item features oversized, rounded ear cushions with a narrow seam along the inner rim and a thick, single-piece padded headband that tapers slightly where it joins the cups, giving a compact, minimalist profile.",
+        "color": "black",
+        "material": "plastic",
+        "shape": "curved"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.2865445186989539,
+            0.02264422799314227,
+            0.969864854732902
+        ],
+        "bbox": {
+            "x_min": 1.39290157634891,
+            "x_max": 1.807293053044011,
+            "y_min": -1.1223044816802092,
+            "y_max": -0.8596850123508524,
+            "z_min": 0.6357635180799955,
+            "z_max": 0.924469341787029
+        },
+        "description": "The front cover bears a small rectangular label with a barcode and a tiny square emblem near the lower-right corner. Small printed publisher text appears along the upper spine edge and a faint circular logo is present near the top-left of the spine; the page edges look thick and slightly uneven suggesting a large-format volume.",
+        "color": "brown",
+        "material": "paper",
+        "shape": "rectangular"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            -0.2793582517225833,
+            0.05687929623857749,
+            0.9324268941979728
+        ],
+        "bbox": {
+            "x_min": 1.2066893547588347,
+            "x_max": 1.5921347397538064,
+            "y_min": -0.5887079169607696,
+            "y_max": -0.2692332416274795,
+            "z_min": 0.633776560686975,
+            "z_max": 0.8873246508639647
+        },
+        "description": "The front cover features prominent white text reading '3ds max 5' with an upper grayscale image composed of vertical, architectural-like abstract shapes. The lower edge shows a narrow white border and the spine exhibits worn corners and visible page edges, indicating light use.",
+        "color": "black",
+        "material": "paper",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.06748106639041679,
+            0.09940255852472696,
+            0.9184360055286918
+        ],
+        "bbox": {
+            "x_min": 1.0055540929457543,
+            "x_max": 1.9398473950758257,
+            "y_min": -1.3106197125616865,
+            "y_max": -0.136718606154975,
+            "z_min": 0.27673432230823014,
+            "z_max": 1.013003818205721
+        },
+        "description": "The tabletop surface has a chipped front-left corner with peeling laminate exposing the underlying substrate and a faint circular ring stain near the center. Several small round fastener heads are visible along the rear edge, accompanied by scattered scuff marks, tiny specks, and adhesive residue near one corner where a book was placed.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "headphones",
+        "centroid": [
+            0.029523887572066195,
+            0.01731264037119725,
+            1.0660259999999935
+        ],
+        "bbox": {
+            "x_min": 1.4145357157437217,
+            "x_max": 1.6492085349488748,
+            "y_min": -0.8308932253533232,
+            "y_max": -0.6118563228711944,
+            "z_min": 0.6766167473973106,
+            "z_max": 0.8373030384098232
+        },
+        "description": "The item has broad, pillowy oval ear cushions with deep recessed centers and a seamless outer shell, each cup joined to a thick single-band arch by short, angled yokes. The exterior shows a minimal, slightly textured finish with no visible logos, markings, exposed wires, or control buttons, giving it a simple, closed-back appearance.",
+        "color": "black",
+        "material": "plastic",
+        "shape": "curved"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.28600931417890296,
+            0.022782569225678572,
+            0.9698284432816394
+        ],
+        "bbox": {
+            "x_min": 1.3929522319115946,
+            "x_max": 1.8228521685185661,
+            "y_min": -1.1147196565620658,
+            "y_max": -0.8558392554175323,
+            "z_min": 0.6286583694200883,
+            "z_max": 0.9294868608161697
+        },
+        "description": "The front cover includes a horizontal band near the top containing printed text and a small square label or logo positioned at the lower-right corner of the cover. The book is a thick bound volume with dense page edges and a slightly rounded spine, showing minor edge wear and resting at a slight angle that exposes the layered pages.",
+        "color": "red",
+        "material": "paper",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.06443221761242633,
+            0.10122784401924756,
+            0.9150067317401644
+        ],
+        "bbox": {
+            "x_min": 1.004965561744281,
+            "x_max": 1.9398885182519698,
+            "y_min": -1.3109477781659313,
+            "y_max": -0.1365616296465696,
+            "z_min": 0.27548918470503125,
+            "z_max": 1.0130071406271262
+        },
+        "description": "The tabletop surface shows a reinforced front-left corner with adhesive tape over a chipped edge, several scuff marks, and small dark ink spots scattered across the plane. The four cylindrical legs are attached at the corners with visible paint wear and minor scratches near their bases, and the table edges exhibit small dents and peeling at multiple corners.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "headphones",
+        "centroid": [
+            0.030621850071374922,
+            0.018494179467195723,
+            1.0625768976897618
+        ],
+        "bbox": {
+            "x_min": 1.414915162387938,
+            "x_max": 1.6492085349488748,
+            "y_min": -0.8308932253533232,
+            "y_max": -0.6134630774258313,
+            "z_min": 0.6766474036299039,
+            "z_max": 0.8373030384098232
+        },
+        "description": "The headphones feature thick, rounded over-ear cushions with smooth, seamless outer shells and a visible seam around each cushion edge. The headband forms a single-arch profile with a noticeable inner gap between the band and earcups, with no visible logos, markings, or external wires, giving a minimalist, compact appearance.",
+        "color": "black",
+        "material": "plastic",
+        "shape": "curved"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.2870844487673119,
+            0.02252249795882313,
+            0.9695342646781298
+        ],
+        "bbox": {
+            "x_min": 1.3929522319115946,
+            "x_max": 1.8246433795219774,
+            "y_min": -1.1223044816802092,
+            "y_max": -0.8558392554175323,
+            "z_min": 0.6286583694200883,
+            "z_max": 0.9296315762379063
+        },
+        "description": "The cover has a narrow top band with small printed text near the upper-left and a large solid panel occupying most of the front, with a small square sticker affixed to the lower-right corner. The fore-edge reveals thick layered pages, the spine bears printed publisher markings near the top, and the cover edges show minor bumping and light wear.",
+        "color": "brown",
+        "material": "paper",
+        "shape": "rectangular"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.018507149967678407,
+            -0.08238407301709728,
+            1.2024951422623107
+        ],
+        "bbox": {
+            "x_min": 1.6161587470635466,
+            "x_max": 1.8590299659081133,
+            "y_min": -0.7990143174025778,
+            "y_max": -0.5161759339549334,
+            "z_min": 0.7058876128506241,
+            "z_max": 0.870494570283958
+        },
+        "description": "The spine displays the printed title '3ds max 5' with the subtitle 'FUNDAMENTALS' set beneath in uppercase and a small rectangular publisher mark near the lower edge. A narrow contrasting band runs along the bottom of the spine and there is light scuffing at the top corner, with the title set in a modern sans-serif and condensed uppercase subtitle.",
+        "color": "blue",
+        "material": "paper",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.03724662491335132,
+            0.10254148352449398,
+            0.912354930952721
+        ],
+        "bbox": {
+            "x_min": 1.0050158389846744,
+            "x_max": 1.9398885182519698,
+            "y_min": -1.3110000818159924,
+            "y_max": -0.13756797640932839,
+            "z_min": 0.2750863219049666,
+            "z_max": 1.0130071406271264
+        },
+        "description": "The tabletop exhibits a prominent chipped front-left corner revealing the inner core, multiple dark scuff marks and small surface scratches along the edges, and a faint seam line across the center where panels meet. It is supported by four cylindrical legs and currently holds a stacked hardcover book with a distinct two-toned cover on the right and a pair of over-ear headphones on the left, producing a slightly worn, utilitarian appearance.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.2865446582917518,
+            0.022586186027073102,
+            0.9699409005628578
+        ],
+        "bbox": {
+            "x_min": 1.39290157634891,
+            "x_max": 1.8065814483974727,
+            "y_min": -1.1192912147970935,
+            "y_max": -0.8596850123508524,
+            "z_min": 0.6357635180799958,
+            "z_max": 0.9244118498632204
+        },
+        "description": "A horizontal band along the spine contains small printed text and the front cover bears a small square sticker or publisher logo near its lower-right corner. The book has a thick text block with visible page edges and a slightly rounded fore-edge, giving it a substantial, reference-style profile.",
+        "color": "red",
+        "material": "paper",
+        "shape": "rectangular"
+    },
+    {
+        "label": "headphones",
+        "centroid": [
+            -0.33813986856510914,
+            -0.007781249270551849,
+            1.1120092226613971
+        ],
+        "bbox": {
+            "x_min": 1.4227573360211567,
+            "x_max": 1.590969917660098,
+            "y_min": -0.46076456565180796,
+            "y_max": -0.2579577272873046,
+            "z_min": 0.6965079110293595,
+            "z_max": 0.8039614999218583
+        },
+        "description": "The headphones feature oversized, thick oval ear cushions with visible stitching along the seams and a slightly textured outer surface, indicating enhanced comfort and passive noise isolation. They have a seamless single-piece headband with no visible hinges or branding, and the ear cups are slightly angled inward creating a compact closed-back profile.",
+        "color": "black",
+        "material": "plastic",
+        "shape": "curved"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.06025711259691805,
+            0.07063914447392809,
+            0.9741631111111272
+        ],
+        "bbox": {
+            "x_min": 1.0001858356630606,
+            "x_max": 2.0593741219461137,
+            "y_min": -1.3148693223751562,
+            "y_max": -0.09831835326416449,
+            "z_min": 0.21680476485255973,
+            "z_max": 1.018093359260746
+        },
+        "description": "The tabletop surface shows numerous scuff marks, small dark scratches, and a torn adhesive patch at the front-left corner, with a paperback book bearing a brown-and-white cover and printed spine text placed near the top-right area. Edges display several small chips and visible fastener points, and the supporting legs exhibit paint chipping and minor surface rust near their bases, suggesting light wear and past repairs.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    },
+    {
+        "label": "book",
+        "centroid": [
+            0.28692912476407023,
+            0.022036025812954604,
+            0.9701559078897798
+        ],
+        "bbox": {
+            "x_min": 1.3927582033016321,
+            "x_max": 1.8066578379911813,
+            "y_min": -1.118143482589384,
+            "y_max": -0.8580797110458668,
+            "z_min": 0.635509229076311,
+            "z_max": 0.9244118498632201
+        },
+        "description": "Cover displays a contrasting top band with small printed publisher text and a square barcode-style label on the lower-right corner of the front cover, along with a horizontal dividing line near the spine. The book presents a thick block of pages with visible page edges, a slightly curved spine and a minor corner scuff at the bottom-front, indicating light wear.",
+        "color": "red",
+        "material": "paper",
+        "shape": "rectangular"
+    }
+][
+    {
+        "label": "table",
+        "centroid": [
+            -0.02763624092099134,
+            0.09248001535524174,
+            0.9387256829879995
+        ],
+        "bbox": {
+            "x_min": 0.9094420067514026,
+            "x_max": 2.142030281390362,
+            "y_min": -1.4659314898731775,
+            "y_max": -0.096518777563539,
+            "z_min": -0.024276135279029498,
+            "z_max": 1.0146185630842979
+        },
+        "description": "The tabletop surface has multiple visible scuffs, scratches and a shallow central dent, along with a faint rectangular adhesive mark near the center and a small circular blemish near the top-right area. The front-left corner shows a chipped finish with tape residue and edge damage exposing the inner layer, and small dark scuff marks are present along the perimeter of the top.",
+        "color": "white",
+        "material": "wood",
+        "shape": "rectangular"
+    }
+]

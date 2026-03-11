@@ -1,0 +1,17 @@
+[
+    {
+        "label": "table",
+        "description": "The tabletop surface has a chipped front-left corner with peeling laminate exposing the underlying substrate and a faint circular ring stain near the center. Several small round fastener heads are visible along the rear edge, accompanied by scattered scuff marks, tiny specks, and adhesive residue near one corner where a book was placed.",
+        "color": "white",
+        "material": "wood",
+        "shape": "",
+        "bbox": {
+            "x_min": 0.9094420075416565,
+            "x_max": 2.1420302391052246,
+            "y_min": -1.4659315347671509,
+            "y_max": -0.09651877731084824,
+            "z_min": -0.024276135489344597,
+            "z_max": 1.0146185159683228
+        }
+    }
+]

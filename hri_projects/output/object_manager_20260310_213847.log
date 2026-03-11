@@ -1,0 +1,68 @@
+2026-03-10 21:38:47,782 [INFO] === ObjectManagerNode Initialized ===
+2026-03-10 21:38:47,869 [WARNING] ============================================================
+2026-03-10 21:38:47,869 [WARNING] [EXPLORATION] The robot is in EXPLORATION.
+2026-03-10 21:38:47,870 [WARNING] [EXPLORATION] Will switch to TRACKING when an object is seen again.
+2026-03-10 21:38:47,870 [WARNING] ============================================================
+2026-03-10 21:38:47,871 [WARNING] [EXPLORATION] Manual interruption received - switching to TRACKING mode...
+2026-03-10 21:38:47,871 [WARNING] ============================================================
+2026-03-10 21:38:47,872 [WARNING] [EXPLORATION] Exploration phase ENDED!
+2026-03-10 21:38:47,872 [WARNING] [EXPLORATION] An object has been SEEN AGAIN - switching to TRACKING
+2026-03-10 21:38:47,873 [WARNING] [TRACKING] Tracking mode ACTIVATED
+2026-03-10 21:38:47,873 [WARNING] ============================================================
+2026-03-10 21:39:32,148 [DEBUG] [FOV] Received FOV from depth: X[0.75, -1.73], Y[-0.21, 2.46], Z[0.56, 1.03]
+2026-03-10 21:39:32,565 [INFO] Saved 1 objects to persistent_perception.json
+2026-03-10 21:39:32,565 [INFO] Saved object labels: ['table']
+2026-03-10 21:39:32,565 [DEBUG]   - table: The tabletop shows chipped and peeling veneer at the front-left corner with a strip of residual adhesive tape and several small scuff marks along the edges, and there are faint dark stains near the upper-right area. Three distinct objects sit on its surface in a row: on the left a softcover book with visible title '3ds max 5', in the center a pair of over-ear headphones, and on the right a thick hardcover book with a brown dust jacket and a small barcode sticker on the top-right corner.
+2026-03-10 21:39:32,724 [INFO] Saved 2 objects to persistent_perception.json
+2026-03-10 21:39:32,725 [INFO] Saved object labels: ['table', 'headphones']
+2026-03-10 21:39:32,725 [DEBUG]   - table: The tabletop shows chipped and peeling veneer at the front-left corner with a strip of residual adhesive tape and several small scuff marks along the edges, and there are faint dark stains near the upper-right area. Three distinct objects sit on its surface in a row: on the left a softcover book with visible title '3ds max 5', in the center a pair of over-ear headphones, and on the right a thick hardcover book with a brown dust jacket and a small barcode sticker on the top-right corner.
+2026-03-10 21:39:32,725 [DEBUG]   - headphones: A single-piece over-ear headphone design with a wide, uniformly padded headband that extends into thick, oval-shaped ear cushions and shows no visible articulation or folding hinges. The earcup surfaces are smooth and featureless with a subtle matte texture and a minimalist, seamless construction that gives the set a clean, modern silhouette and slightly squared oval cushions.
+2026-03-10 21:39:32,861 [INFO] Saved 3 objects to persistent_perception.json
+2026-03-10 21:39:32,862 [INFO] Saved object labels: ['table', 'headphones', 'book#1']
+2026-03-10 21:39:32,862 [DEBUG]   - table: The tabletop shows chipped and peeling veneer at the front-left corner with a strip of residual adhesive tape and several small scuff marks along the edges, and there are faint dark stains near the upper-right area. Three distinct objects sit on its surface in a row: on the left a softcover book with visible title '3ds max 5', in the center a pair of over-ear headphones, and on the right a thick hardcover book with a brown dust jacket and a small barcode sticker on the top-right corner.
+2026-03-10 21:39:32,862 [DEBUG]   - headphones: A single-piece over-ear headphone design with a wide, uniformly padded headband that extends into thick, oval-shaped ear cushions and shows no visible articulation or folding hinges. The earcup surfaces are smooth and featureless with a subtle matte texture and a minimalist, seamless construction that gives the set a clean, modern silhouette and slightly squared oval cushions.
+2026-03-10 21:39:32,862 [DEBUG]   - book#1: The cover features a large plain central panel with a small white square sticker containing a barcode in the lower-right corner and a narrow white publisher strip near the top-left with tiny black printed text. The thick page block shows slightly yellowed edges and the spine exhibits a subtle concave curve, giving the book a gently warped profile with a glossy cover finish.
+2026-03-10 21:39:33,661 [INFO] Saved 4 objects to persistent_perception.json
+2026-03-10 21:39:33,662 [INFO] Saved object labels: ['table', 'headphones', 'book#1', 'book#2']
+2026-03-10 21:39:33,662 [DEBUG]   - table: The tabletop shows chipped and peeling veneer at the front-left corner with a strip of residual adhesive tape and several small scuff marks along the edges, and there are faint dark stains near the upper-right area. Three distinct objects sit on its surface in a row: on the left a softcover book with visible title '3ds max 5', in the center a pair of over-ear headphones, and on the right a thick hardcover book with a brown dust jacket and a small barcode sticker on the top-right corner.
+2026-03-10 21:39:33,662 [DEBUG]   - headphones: A single-piece over-ear headphone design with a wide, uniformly padded headband that extends into thick, oval-shaped ear cushions and shows no visible articulation or folding hinges. The earcup surfaces are smooth and featureless with a subtle matte texture and a minimalist, seamless construction that gives the set a clean, modern silhouette and slightly squared oval cushions.
+2026-03-10 21:39:33,662 [DEBUG]   - book#1: The cover features a large plain central panel with a small white square sticker containing a barcode in the lower-right corner and a narrow white publisher strip near the top-left with tiny black printed text. The thick page block shows slightly yellowed edges and the spine exhibits a subtle concave curve, giving the book a gently warped profile with a glossy cover finish.
+2026-03-10 21:39:33,662 [DEBUG]   - book#2: Front cover prominently shows the printed text '3ds max 5' with a smaller line of subtitle text directly beneath it, positioned toward the lower portion of the cover. The upper cover area contains a high-contrast abstract photographic image with vertical linear elements, and the fore-edge reveals stacked pages with slight corner wear visible on the bottom edge.
+2026-03-10 21:39:33,664 [INFO] Saved 0 uncertain objects in uncertain_objects.txt
+2026-03-10 21:39:34,216 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_tracking_001.json
+2026-03-10 21:39:34,600 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_tracking_001.png
+2026-03-10 21:39:34,601 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:39:35,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:39:37,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:39:39,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:39:41,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:39:43,870 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:39:45,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:39:47,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:39:49,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:39:51,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:39:53,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:39:55,869 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:39:57,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:39:59,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:40:01,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:40:03,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:40:05,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:40:07,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:40:09,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:40:11,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:40:13,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:40:14,238 [DEBUG] [FOV] Received FOV from depth: X[0.75, -1.73], Y[-0.20, 2.46], Z[0.56, 1.03]
+2026-03-10 21:40:14,733 [INFO] Saved 0 uncertain objects in uncertain_objects.txt
+2026-03-10 21:40:14,734 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_tracking_002.json
+2026-03-10 21:40:15,083 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_tracking_002.png
+2026-03-10 21:40:15,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:40:17,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:40:19,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:40:21,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:40:23,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:40:25,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:40:27,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:40:29,872 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:40:31,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)
+2026-03-10 21:40:33,868 [DEBUG] [PERIODIC] Periodic publishing of bbox (4 objects)

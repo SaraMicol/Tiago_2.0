@@ -1,0 +1,26 @@
+2026-03-02 17:22:51,042 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2026-03-02 17:22:51,045 INFO RPC interface 'supervisor' initialized
+2026-03-02 17:22:51,045 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2026-03-02 17:22:51,045 INFO supervisord started with pid 14
+2026-03-02 17:22:52,046 INFO spawnerr: can't find command '/app/booster_motion/booster-motion'
+2026-03-02 17:22:52,072 INFO spawned: 'delayed-starter' with pid 15
+2026-03-02 17:22:53,074 INFO spawnerr: can't find command '/app/booster_motion/booster-motion'
+2026-03-02 17:22:53,075 INFO success: delayed-starter entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2026-03-02 17:22:55,078 INFO spawnerr: can't find command '/app/booster_motion/booster-motion'
+2026-03-02 17:22:58,082 INFO spawnerr: can't find command '/app/booster_motion/booster-motion'
+2026-03-02 17:22:58,082 INFO gave up: booster-motion entered FATAL state, too many start retries too quickly
+2026-03-02 17:22:58,223 INFO exited: delayed-starter (exit status 1; not expected)
+2026-03-02 17:25:24,383 WARN received SIGINT indicating exit request
+2026-03-02 17:25:25,782 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2026-03-02 17:25:25,784 INFO RPC interface 'supervisor' initialized
+2026-03-02 17:25:25,784 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2026-03-02 17:25:25,784 INFO supervisord started with pid 14
+2026-03-02 17:25:26,785 INFO spawnerr: can't find command '/app/booster_motion/booster-motion'
+2026-03-02 17:25:26,808 INFO spawned: 'delayed-starter' with pid 15
+2026-03-02 17:25:27,810 INFO spawnerr: can't find command '/app/booster_motion/booster-motion'
+2026-03-02 17:25:27,810 INFO success: delayed-starter entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2026-03-02 17:25:29,812 INFO spawnerr: can't find command '/app/booster_motion/booster-motion'
+2026-03-02 17:25:32,815 INFO spawnerr: can't find command '/app/booster_motion/booster-motion'
+2026-03-02 17:25:32,815 INFO gave up: booster-motion entered FATAL state, too many start retries too quickly
+2026-03-02 17:25:32,965 INFO exited: delayed-starter (exit status 1; not expected)
+2026-03-02 17:26:49,045 WARN received SIGINT indicating exit request

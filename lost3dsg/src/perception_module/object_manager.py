@@ -37,7 +37,7 @@ file_path = os.path.abspath(__file__)
 current_dir = os.path.dirname(file_path)
 PROJECT_ROOT = current_dir.split('/install/')[0] if '/install/' in current_dir else os.path.abspath(os.path.join(current_dir, "../.."))
 
-with open(os.path.join(PROJECT_ROOT, "src", "perception_module", "api.txt"), "r") as f:
+with open(os.path.join(PROJECT_ROOT, "perception_module", "api.txt"), "r") as f:
     api_key = f.read().strip()
 
 client = OpenAI(api_key=api_key)
@@ -550,21 +550,19 @@ class ObjectManagerNode(Node):
         self.file_logger.info("=== ObjectManagerNode Initialized ===")
         self.get_logger().info(f"Log saved in: {log_file}")
 
-        # Instance variables
-        self.exploration_mode = True  # Controlled by separate thread
-        self.seen_again = False  # Flag to detect when an object is seen again
-
+        self.exploration_mode = True
+        self.seen_again = False
         self.latest_bboxes = {}
-        self.latest_fov_volume = None  # FOV volume from depth camera
-
-        # Uncertain objects list
+        self.latest_fov_volume = None
         self.uncertain_objects = []
+        self.tracking_step_counter = 0
+        self.exploration_step_counter = 0
 
         qos_latch = QoSProfile(depth=10, durability=DurabilityPolicy.TRANSIENT_LOCAL)
         qos_standard = QoSProfile(depth=10)
-        self.robot_has_moved = False  # Flag to detect if robot has moved at least once
+        self.robot_has_moved = False
+        
         self.create_subscription(Bool, "/robot_movement_detected", self.movement_callback, qos_standard)
-
         self.persistent_bbox_pub = self.create_publisher(MarkerArray, '/persistent_bbox', qos_latch)
         self.persistent_centroids_pub = self.create_publisher(MarkerArray, '/persistent_centroids', qos_latch)
         self.considered_volume_pub = self.create_publisher(MarkerArray, '/considered_volume', qos_standard)
@@ -585,56 +583,43 @@ class ObjectManagerNode(Node):
         if msg.data and not self.robot_has_moved:
             self.robot_has_moved = True
             self.log_both('warn', "[MOVEMENT] ✓ Robot has moved at least once - can now transition to TRACKING")
-        else:
-            self.log_both('info', f"[MOVEMENT] robot_has_moved already set to: {self.robot_has_moved}")
-
 
     def log_both(self, level, message):
-        # Log on ROS
+        """Log to both ROS and file logger."""
         if level == 'info':
             self.get_logger().info(message)
-        elif level == 'warn':
-            self.get_logger().warn(message)
-        elif level == 'error':
-            self.get_logger().error(message)
-        elif level == 'debug':
-            self.get_logger().debug(message)
-
-        # Log on file 
-        if level == 'info':
             self.file_logger.info(message)
         elif level == 'warn':
+            self.get_logger().warn(message)
             self.file_logger.warning(message)
         elif level == 'error':
+            self.get_logger().error(message)
             self.file_logger.error(message)
         elif level == 'debug':
+            self.get_logger().debug(message)
             self.file_logger.debug(message)
 
-        # Print on console for info and warn
         if level in ['info', 'warn']:
             prefix = "[INFO] " if level == 'info' else "[WARN] "
             print(f"{prefix}{message}")
 
-
     def wait_for_exploration_end(self):
-
+        """Wait for exploration phase to end."""
         self.log_both('warn', "=" * 60)
         self.log_both('warn', "[EXPLORATION] The robot is in EXPLORATION.")
         self.log_both('warn', "[EXPLORATION] Will switch to TRACKING when an object is seen again.")
         self.log_both('warn', "=" * 60)
 
-        # Wait until an object is seen again
         while not self.seen_again:
             choice = input("Click ENTER to stop exploration and switch to TRACKING mode...\n")
             if choice == "":
                 self.seen_again = True
                 self.log_both('warn', "[EXPLORATION] Manual interruption received - switching to TRACKING mode...")
                 break
-            time.sleep(0.1)  # Check every 100ms
+            time.sleep(0.1)
 
         self.log_both('warn', "=" * 60)
         self.log_both('warn', "[EXPLORATION] Exploration phase ENDED!")
-        self.log_both('warn', "[EXPLORATION] An object has been SEEN AGAIN - switching to TRACKING")
         self.log_both('warn', "[TRACKING] Tracking mode ACTIVATED")
         self.log_both('warn', "=" * 60)
         print("\n\n\n")
@@ -644,22 +629,204 @@ class ObjectManagerNode(Node):
         publish_persistent_bboxes(self, wm, self.persistent_bbox_pub)
         publish_persistent_centroids(self, wm, self.persistent_centroids_pub)
 
+    def add_new_object(self, label, bbox, description_text, color, material, description_embedding, in_exploration):
+        """
+        Add a new detected object to persistent_perceptions.
+
+        Args:
+            label: Object label
+            bbox: Bounding box dict
+            description_text: Description text
+            color: Object color
+            material: Object material
+            description_embedding: Embedding of description
+            in_exploration: Boolean flag for exploration mode
+
+        Returns:
+            new_obj: The newly created object
+        """
+        new_obj = Object(label, None, bbox, description_text, color, material)
+        new_obj.embedding = description_embedding
+        wm.persistent_perceptions.append(new_obj)
+
+        x_size = bbox["x_max"] - bbox["x_min"]
+        y_size = bbox["y_max"] - bbox["y_min"]
+        z_size = bbox["z_max"] - bbox["z_min"]
+        volume = x_size * y_size * z_size
+
+        mode_tag = "[EXPLORATION]" if in_exploration else f"[TRACKING STEP {self.tracking_step_counter}]"
+        print(f"{mode_tag} New object '{label}' added to persistent_perceptions (bbox volume: {volume:.3f} m³)")
+
+        if not in_exploration:
+            tracking_logger.log_new_object(new_obj, case_type="NEW DETECTION")
+
+        save_persistent_perceptions(self)
+
+        if in_exploration:
+            self.exploration_step_counter += 1
+            save_scene_graph(self, self.exploration_step_counter, is_exploration=True)
+
+        return new_obj
+
+    def modify_existing_object(self, best_match, bbox, description_embedding):
+        """
+        Modify an existing tracked object based on new detection.
+
+        Args:
+            best_match: The best matching persistent object
+            bbox: New bounding box
+            description_embedding: New description embedding
+
+        Returns:
+            tuple: (updated_obj, distance, iou)
+        """
+        old_bbox = best_match.bbox
+        iou = compute_iou_3d(bbox, old_bbox)
+        print(f"IoU with existing position: {iou:.3f} (threshold: {TRACKING_IOU_THRESHOLD})")
+
+        # Calculate distance moved
+        old_x = (old_bbox['x_min'] + old_bbox['x_max']) / 2.0
+        old_y = (old_bbox['y_min'] + old_bbox['y_max']) / 2.0
+        old_z = (old_bbox['z_min'] + old_bbox['z_max']) / 2.0
+        new_x = (bbox['x_min'] + bbox['x_max']) / 2.0
+        new_y = (bbox['y_min'] + bbox['y_max']) / 2.0
+        new_z = (bbox['z_min'] + bbox['z_max']) / 2.0
+        distance = np.sqrt((new_x - old_x)**2 + (new_y - old_y)**2 + (new_z - old_z)**2)
+
+        # CASE 2: High IoU → Same position, just update bbox
+        if iou >= TRACKING_IOU_THRESHOLD:
+            print(f"CASE 2: Object recognized in the same position (IoU={iou:.3f})")
+            best_match.bbox = bbox
+            return best_match, distance, iou
+
+        # CASE 3: Low IoU → Object moved far
+        else:
+            print(f"\nOLD POSITION: X={old_x:.3f}, Y={old_y:.3f}, Z={old_z:.3f}")
+            print(f"NEW POSITION: X={new_x:.3f}, Y={new_y:.3f}, Z={new_z:.3f}")
+            print(f"Movement distance: {distance:.3f} meters")
+
+            # Remove from old position
+            if best_match in wm.persistent_perceptions:
+                wm.persistent_perceptions.remove(best_match)
+                print(f"🔄 MODIFICATION: '{best_match.label}' removed from old position")
+
+            # Add to uncertain if moved far (>0.8m)
+            if distance > 0.8:
+                if best_match not in self.uncertain_objects:
+                    self.uncertain_objects.append(best_match)
+                    print(f"📝 '{best_match.label}' added to UNCERTAIN_OBJECTS (movement={distance:.3f}m)")
+                    tracking_logger.log_uncertain_added(best_match.label, "Large displacement detected", distance,
+                                                       bbox=best_match.bbox, step_number=self.tracking_step_counter,
+                                                       obj=best_match, case_type="MOVED >0.8m")
+
+            # Create new object at new position
+            updated_obj = Object(best_match.label, None, bbox, best_match.description, best_match.color, best_match.material)
+            updated_obj.embedding = description_embedding
+            wm.persistent_perceptions.append(updated_obj)
+            print(f"✓ '{best_match.label}' reinserted with new position in persistent_perceptions")
+
+            tracking_logger.log_position_change(best_match.label, old_bbox, bbox, distance,
+                                              step_number=self.tracking_step_counter, obj=updated_obj,
+                                              case_type="POSITION UPDATE")
+
+            return updated_obj, distance, iou
+
+    def delete_undetected_objects(self, pov_volume, current_perception_objects, description_received):
+        """
+        Delete objects not detected in current frame within POV.
+
+        Args:
+            pov_volume: POV volume from depth camera
+            current_perception_objects: List of detected objects this frame
+            description_received: Boolean if objects were detected
+
+        Returns:
+            bool: True if objects were modified
+        """
+        if not pov_volume:
+            print(f"No FOV volume available from depth camera - unable to calculate POV")
+            return False
+
+        print(f"[POV] Using FOV from depth camera: X[{pov_volume['x_min']:.2f}, {pov_volume['x_max']:.2f}], "
+              f"Y[{pov_volume['y_min']:.2f}, {pov_volume['y_max']:.2f}], "
+              f"Z[{pov_volume['z_min']:.2f}, {pov_volume['z_max']:.2f}]")
+        publish_pov_volume(self, pov_volume, self.considered_volume_pub)
+
+        objects_to_remove = []
+
+        if not description_received:
+            # No objects detected - remove those in POV
+            for obj in wm.persistent_perceptions:
+                if obj.bbox and bbox_centroid_in_volume(obj.bbox, pov_volume):
+                    objects_to_remove.append(obj)
+                    print(f"DELETION: '{obj.label}' is IN POV but NOT SEEN → Will be REMOVED")
+        else:
+            # Objects detected - remove unmatched ones in POV
+            for obj in wm.persistent_perceptions:
+                if obj not in current_perception_objects:
+                    if obj.bbox and bbox_centroid_in_volume(obj.bbox, pov_volume):
+                        objects_to_remove.append(obj)
+
+        if objects_to_remove:
+            print(f"\nDELETING {len(objects_to_remove)} OBJECTS - TRACKING STEP {self.tracking_step_counter}")
+            for obj in objects_to_remove:
+                tracking_logger.log_deletion(obj.label, "Object in POV but not detected", bbox=obj.bbox,
+                                            step_number=self.tracking_step_counter, obj=obj, case_type="NOT SEEN IN POV")
+                wm.persistent_perceptions.remove(obj)
+            save_persistent_perceptions(self)
+            return True
+        else:
+            print(f"✓ No objects to remove in this step")
+            return False
+
+    def delete_uncertain_objects(self, pov_volume):
+        """
+        Remove uncertain objects whose zones have been verified in POV.
+
+        Args:
+            pov_volume: POV volume from depth camera
+
+        Returns:
+            bool: True if uncertain objects were modified
+        """
+        print(f"\n{'─'*60}")
+        print(f"[TRACKING STEP {self.tracking_step_counter}] Verifying uncertain objects with POV VOLUME...")
+        print(f"{'─'*60}")
+
+        uncertain_to_remove = []
+
+        if pov_volume:
+            for uncertain_obj in self.uncertain_objects:
+                if uncertain_obj.bbox and bbox_centroid_in_volume(uncertain_obj.bbox, pov_volume):
+                    uncertain_to_remove.append(uncertain_obj)
+                    print(f"✅ DELETION: '{uncertain_obj.label}' (ORANGE) in POV - zone VERIFIED → REMOVE")
+
+        if uncertain_to_remove:
+            print(f"\nDELETING {len(uncertain_to_remove)} UNCERTAIN OBJECTS - TRACKING STEP {self.tracking_step_counter}")
+            for uncertain_obj in uncertain_to_remove:
+                tracking_logger.log_deletion(uncertain_obj.label, "Uncertain zone verified", bbox=uncertain_obj.bbox,
+                                            step_number=self.tracking_step_counter, obj=uncertain_obj,
+                                            case_type="UNCERTAIN ZONE VERIFIED")
+                self.uncertain_objects.remove(uncertain_obj)
+            return True
+        else:
+            if self.uncertain_objects:
+                print(f"No uncertain object to remove in this step")
+            return False
+
     def description_callback(self, msg):
+        """Process object descriptions from perception module."""
         if not hasattr(self, 'tracking_step_counter'):
             self.tracking_step_counter = 0
         if not hasattr(self, 'exploration_step_counter'):
             self.exploration_step_counter = 0
+
         if not self.exploration_mode:
             self.tracking_step_counter += 1
 
         in_exploration = self.exploration_mode
         mode_str = "EXPLORATION" if in_exploration else f"TRACKING STEP {self.tracking_step_counter}"
-        print(f"Mode: {mode_str}")
-
-        # IMPORTANT: Do NOT return if msg.descriptions is empty!
-        # An empty message means "I looked but saw nothing"
-        # This is FUNDAMENTAL for removing objects in the POV
-        
+        print(f"\n{'='*60}\nMode: {mode_str}\n{'='*60}")
 
         current_perception_objects = []
         objects_modified = False
@@ -672,24 +839,18 @@ class ObjectManagerNode(Node):
             material = description.material
             description_text = description.description
 
-            print(f"1. Calculating embedding for description...")
+            print(f"Processing: '{label}'")
             description_embedding = get_embedding(client, description_text)
 
-
-            # Find the old key with only label
+            # Find matching bbox
             old_key = create_object_key(label, "", "", "")
-
             if old_key not in self.latest_bboxes:
-                print("No matching bbox found for this label.")
+                print(f"  No matching bbox found for '{label}' → skipped")
                 continue
 
-            # Found matching bbox
             bbox = self.latest_bboxes[old_key]["bbox"]
-            matched_label = self.latest_bboxes[old_key]["label"]
-
             new_key = create_object_key(label, material, color, description_text)
 
-            # Remove old key and add new key
             del self.latest_bboxes[old_key]
             self.latest_bboxes[new_key] = {
                 "bbox": bbox,
@@ -699,299 +860,83 @@ class ObjectManagerNode(Node):
                 "description": description_text
             }
 
-            print(f"   Old key (label only): {old_key}...")
-            print(f"   New key (complete):   {new_key}...")
-        
             matched_bboxes.append(bbox)
-
             already_seen = False
 
             # ======== EXPLORATION LOGIC ========
             if in_exploration:
-                print(f"3. [EXPLORATION] Comparing with {len(wm.persistent_perceptions)} persistent objects using lost_similarity...")
+                print(f"  Comparing with {len(wm.persistent_perceptions)} persistent objects...")
                 for obj in wm.persistent_perceptions:
-                    # Use lost_similarity
                     obj_label_base = obj.label.split('#')[0] if '#' in obj.label else obj.label
-                    similarity = lost_similarity(
-                        world2vec,
-                        label_base, obj_label_base,
-                        color, obj.color,
-                        material, obj.material,
-                        description_embedding, obj.embedding
-                    )
-                    print("Comparing with persistent object:", obj.label)
-                    if similarity > SIM_THRESHOLD:
-                        print(f"Semantic match! Calculating spatial IoU...")
-                        if obj.bbox is not None:
-                            iou = compute_iou_3d(bbox, obj.bbox)
-                            print(f"IoU: {iou:.3f} (threshold: {EXPLORATION_IOU_THRESHOLD})")
+                    similarity = lost_similarity(world2vec, label_base, obj_label_base, color, obj.color,
+                                               material, obj.material, description_embedding, obj.embedding)
 
-                            if iou < EXPLORATION_IOU_THRESHOLD:
-                                print(f"IoU too low - objects considered different")
-                                continue
-                            else:
-                                # Equal object found in the same position
-                                already_seen = True
-                                current_perception_objects.append(obj)
-                                obj.bbox = bbox
-                                print(f"FULL MATCH! '{label}' = '{obj.label}' (lost_sim={similarity:.3f}, IoU={iou:.3f})")
-                                # Set flag to trigger transition to tracking (I have seen an object again AND robot has moved at least once)
-                                if not self.seen_again:
-                                    if self.robot_has_moved:
-                                        self.seen_again = True
-                                        self.log_both('warn', f"[EXPLORATION] ✓ Object '{label}' seen again! Robot has moved. Switching to TRACKING...")
-                                    else:
-                                        self.log_both('warn', f"[EXPLORATION] Object '{label}' seen again, but robot hasn't moved yet. Waiting for movement...")
+                    if similarity > SIM_THRESHOLD and obj.bbox is not None:
+                        iou = compute_iou_3d(bbox, obj.bbox)
+                        if iou >= EXPLORATION_IOU_THRESHOLD:
+                            already_seen = True
+                            current_perception_objects.append(obj)
+                            obj.bbox = bbox
+                            print(f"  ✓ MATCH: '{label}' = '{obj.label}' (sim={similarity:.3f}, IoU={iou:.3f})")
 
-                                break
+                            if not self.seen_again and self.robot_has_moved:
+                                self.seen_again = True
+                                self.log_both('warn', f"[EXPLORATION] Object seen again + robot moved → Switching to TRACKING...")
+                            break
 
-            # ======== Tracking ========
+            # ======== TRACKING LOGIC ========
             else:
-                print(f"3. [TRACKING STEP {self.tracking_step_counter}] Creating search volume proportional to object size...")
-                # MODIFIED: Expanded volume proportionally (used only for debug info)
                 search_volume = expand_bbox_for_search(bbox, VOLUME_EXPANSION_RATIO)
+                print(f"  Searching in {len(wm.persistent_perceptions)} persistent objects...")
 
-                print(f"4. [FIX] Semantic matching among ALL persistent objects ({len(wm.persistent_perceptions)} objects)...")
                 best_match = None
                 best_score = 0
 
                 for obj in wm.persistent_perceptions:
                     if not hasattr(obj, "embedding"):
                         obj.embedding = get_embedding(client, obj.description)
-
                     if obj.embedding is None:
                         continue
 
-                    # Use lost_similarity
                     obj_label_base = obj.label.split('#')[0] if '#' in obj.label else obj.label
-                    similarity = lost_similarity(
-                        world2vec,
-                        label_base, obj_label_base,
-                        color, obj.color,
-                        material, obj.material,
-                        description_embedding, obj.embedding
-                    )
-                    print(f"   Comparing with persistent object: '{obj.label}' (lost_sim={similarity:.3f})")
-                    # FIX: Indicate whether the object is inside the search volume
-                    is_in_volume = bbox_intersects_volume(obj.bbox, search_volume) if obj.bbox else False
-                    print(f"      - Object bbox intersects search volume: {is_in_volume}")
+                    similarity = lost_similarity(world2vec, label_base, obj_label_base, color, obj.color,
+                                               material, obj.material, description_embedding, obj.embedding)
 
                     if similarity > SIM_THRESHOLD and similarity > best_score:
                         best_score = similarity
                         best_match = obj
 
-                # If match found, update
                 if best_match:
-                    print(f"Best match found: '{best_match.label}' (score={best_score:.2f})")
+                    print(f"  Best match: '{best_match.label}' (sim={best_score:.2f})")
                     already_seen = True
 
-                    # Compute IoU
-                    old_bbox = best_match.bbox
-                    iou = compute_iou_3d(bbox, old_bbox)
-                    print(f"IoU with existing position: {iou:.3f} (threshold: {TRACKING_IOU_THRESHOLD})")
-
-                    # CASE 2: High IoU (>= threshold) → Same object, update bbox
-                    if iou >= TRACKING_IOU_THRESHOLD:
-                        print(f"CASE 2: Object recognized in the same position (IoU={iou:.3f})")
-                        print(f"Updating bbox of '{best_match.label}'")
-
-                        # Small movement logging
-                        if iou < 0.9:  # Only if there has been a minimum movement
-                            old_x = (old_bbox['x_min'] + old_bbox['x_max']) / 2.0
-                            old_y = (old_bbox['y_min'] + old_bbox['y_max']) / 2.0
-                            old_z = (old_bbox['z_min'] + old_bbox['z_max']) / 2.0
-                            new_x = (bbox['x_min'] + bbox['x_max']) / 2.0
-                            new_y = (bbox['y_min'] + bbox['y_max']) / 2.0
-                            new_z = (bbox['z_min'] + bbox['z_max']) / 2.0
-
-
-                        best_match.bbox = bbox
-                        current_perception_objects.append(best_match)
-                        objects_modified = True
-                        
-                    # CASE 3: Low IoU (< threshold) → Same object but moved FAR
-                    else:
-                        
-                        distance = 0.0
-                        if best_match.bbox:
-                            old_x = (best_match.bbox['x_min'] + best_match.bbox['x_max']) / 2.0
-                            old_y = (best_match.bbox['y_min'] + best_match.bbox['y_max']) / 2.0
-                            old_z = (best_match.bbox['z_min'] + best_match.bbox['z_max']) / 2.0
-                            new_x = (bbox['x_min'] + bbox['x_max']) / 2.0
-                            new_y = (bbox['y_min'] + bbox['y_max']) / 2.0
-                            new_z = (bbox['z_min'] + bbox['z_max']) / 2.0
-                            distance = np.sqrt((new_x - old_x)**2 + (new_y - old_y)**2 + (new_z - old_z)**2)
-
-                            print(f"\nOLD POSITION:")
-                            print(f"      Center: X={old_x:.3f}, Y={old_y:.3f}, Z={old_z:.3f}")
-                            print(f"\nNEW POSITION:")
-                            print(f"     Center: X={new_x:.3f}, Y={new_y:.3f}, Z={new_z:.3f}")
-                            print(f"\nMovement distance: {distance:.3f} meters")
-
-
-
-                        # OBJECT MOVED FAR: Remove old position from persistent_perceptions
-                        if best_match in wm.persistent_perceptions:
-                            wm.persistent_perceptions.remove(best_match)
-                            print(f"   🔄 MODIFICATION: '{best_match.label}' removed from old position (will be reinserted in the new one)")
-
-                        # MODIFICATION: Add to uncertain_objects ONLY IF movement > 80 cm (0.8 meters)
-                        if distance > 0.8:
-                            if best_match not in self.uncertain_objects:
-                                self.uncertain_objects.append(best_match)
-                                print(f"   📝 '{best_match.label}' added to UNCERTAIN_OBJECTS (movement={distance:.3f}m > 0.8m)")
-                                print(f"   → It will be saved in the uncertain_objects.txt file and published on /uncertain_object\n")
-                                # Log uncertain object addition
-                                if not in_exploration:
-                                    tracking_logger.log_uncertain_added(best_match.label, "Large displacement detected", distance,
-                                                                       bbox=best_match.bbox, step_number=self.tracking_step_counter, 
-                                                                       obj=best_match, case_type="MOVED >0.8m")
-                        else:
-                            print(f"{best_match.label} NOT added to UNCERTAIN_OBJECTS (movement={distance:.3f}m ≤ 0.8m)\n")
-
-                        # Create new object with new position
-                        updated_obj = Object(label, None, bbox, description_text, color, material)
-                        updated_obj.embedding = description_embedding
-                        wm.persistent_perceptions.append(updated_obj)
-                        current_perception_objects.append(updated_obj)
-                        print(f"MODIFICATION: '{label}' reinserted with new position in persistent_perceptions")
-                        
-                        # Log position change
-                        if not in_exploration:
-                            tracking_logger.log_position_change(label, best_match.bbox, bbox, distance,
-                                                              step_number=self.tracking_step_counter, obj=updated_obj,
-                                                              case_type="POSITION UPDATE")
-                        
-                        objects_modified = True
+                    updated_obj, distance, iou = self.modify_existing_object(best_match, bbox, description_embedding)
+                    current_perception_objects.append(updated_obj)
+                    objects_modified = True
                 else:
-                    print(f"No match found in the search volume")
+                    print(f"  No semantic match found")
 
-            # If not already seen → add as a new object (always GREEN)
+            # ======== ADD NEW OBJECT ========
             if not already_seen:
-                print(f"\nNEW OBJECT DETECTED!")
-                # Create the new object
-                new_obj = Object(label, None, bbox, description_text, color, material)
-                new_obj.embedding = description_embedding
-
-                # Always add to persistent_perceptions (GREEN bbox)
-                wm.persistent_perceptions.append(new_obj)
+                print(f"  NEW OBJECT: Adding '{label}'")
+                new_obj = self.add_new_object(label, bbox, description_text, color, material,
+                                             description_embedding, in_exploration)
                 current_perception_objects.append(new_obj)
                 objects_modified = True
 
-                # Calculate bbox volume for the new object
-                x_size = bbox["x_max"] - bbox["x_min"]
-                y_size = bbox["y_max"] - bbox["y_min"]
-                z_size = bbox["z_max"] - bbox["z_min"]
-                volume = x_size * y_size * z_size
-
-                mode_tag = "[EXPLORATION]" if in_exploration else f"[TRACKING STEP {self.tracking_step_counter}]"
-                print(f"{mode_tag} New object '{label}' added to persistent_perceptions (bbox volume: {volume:.3f} m³)")
-                
-                # Log new object addition
-                if not in_exploration:
-                    tracking_logger.log_new_object(new_obj, case_type="NEW DETECTION")
-                
-                save_persistent_perceptions(self)
-
-                # Save scene graph after adding object in exploration
-                if in_exploration:
-                    self.exploration_step_counter += 1
-                    save_scene_graph(self, self.exploration_step_counter, is_exploration=True)
-
-        # ======== MANAGEMENT OF OBJECTS NOT SEEN IN THE CURRENT FRAME ========
-        # DELETION - Using FOV volume from depth camera (full visible area)
-
+        # ======== DELETION LOGIC (TRACKING ONLY) ========
         if not in_exploration:
-
-            description_recieved = len(msg.descriptions) > 0
-
-            objects_to_remove = []
-            uncertain_to_remove = []
-
-            # Use FOV volume from depth camera instead of computing from detection bboxes
+            description_received = len(msg.descriptions) > 0
             pov_volume = self.latest_fov_volume
 
             if pov_volume:
-                print(f"[POV] Using FOV from depth camera: X[{pov_volume['x_min']:.2f}, {pov_volume['x_max']:.2f}], "
-                      f"Y[{pov_volume['y_min']:.2f}, {pov_volume['y_max']:.2f}], "
-                      f"Z[{pov_volume['z_min']:.2f}, {pov_volume['z_max']:.2f}]")
-                publish_pov_volume(self, pov_volume, self.considered_volume_pub)
+                objects_modified_delete = self.delete_undetected_objects(pov_volume, current_perception_objects, description_received)
+                objects_modified = objects_modified or objects_modified_delete
 
-                if not description_recieved:
-                    # No objects detected - check which persistent objects are in FOV
-                    for obj in wm.persistent_perceptions:
-                        if obj.bbox and bbox_centroid_in_volume(obj.bbox, pov_volume):
-                            objects_to_remove.append(obj)
-                            print(f"DELETION: '{obj.label}' is IN POV but NOT SEEN (zero detection) → Will be REMOVED from persistent_perceptions")
-                        else:
-                            print(f"'{obj.label}' not in POV (centroid) → ignored")
+                objects_modified_uncertain = self.delete_uncertain_objects(pov_volume)
+                objects_modified = objects_modified or objects_modified_uncertain
 
-                    if self.uncertain_objects:
-                        for uncertain_obj in self.uncertain_objects:
-                            if uncertain_obj.bbox and bbox_centroid_in_volume(uncertain_obj.bbox, pov_volume):
-                                uncertain_to_remove.append(uncertain_obj)
-                                print(f"DELETION: '{uncertain_obj.label}' (ORANGE) is IN POV but NOT SEEN → Will be REMOVED from uncertain_objects")
-                            else:
-                                print(f"'{uncertain_obj.label}' (ORANGE) not in POV (centroid) → ignored")
-
-                    print(f"\nResult: {len(objects_to_remove)} persistent objects to remove, {len(uncertain_to_remove)} uncertain objects to remove")
-
-                else:
-                    # Objects detected - check which persistent objects are in FOV but not matched
-                    for obj in wm.persistent_perceptions:
-                        if obj not in current_perception_objects:
-                            if obj.bbox and bbox_centroid_in_volume(obj.bbox, pov_volume):
-                                objects_to_remove.append(obj)
-                            else:
-                                continue
-                        else:
-                            continue
-            else:
-                print(f"No FOV volume available from depth camera - unable to calculate POV")
-                print(f"This is normal if perception_node hasn't published bbox yet")
-
-            if objects_to_remove:
-                print(f"\nDELETING OBJECTS FROM PERSISTENT_PERCEPTIONS - TRACKING STEP {self.tracking_step_counter}")
-
-                for obj in objects_to_remove:
-                    tracking_logger.log_deletion(obj.label, "Object in POV but not detected", bbox=obj.bbox, 
-                                                step_number=self.tracking_step_counter, obj=obj, case_type="NOT SEEN IN POV")
-                    wm.persistent_perceptions.remove(obj)
-
-                objects_modified = True
-                save_persistent_perceptions(self)
-            else:
-                print(f"✓ No objects to remove in this step")
-
-            # Check uncertain_objects for definitive removal
-            print(f"\n{'─'*60}")
-            print(f"[TRACKING STEP {self.tracking_step_counter}] Verifying uncertain objects with POV VOLUME...")
-            print(f"{'─'*60}")
-            if pov_volume:
-                for uncertain_obj in self.uncertain_objects:
-                    # MODIFIED: Check if the CENTROID is inside the POV (less aggressive)
-                    if uncertain_obj.bbox and bbox_centroid_in_volume(uncertain_obj.bbox, pov_volume):
-                        # If POV contains the old position → I VERIFIED that zone → REMOVE
-                        # Doesn't matter if I see something or not - I looked there, no need to keep it
-                        uncertain_to_remove.append(uncertain_obj)
-                        print(f"   ✅ DELETION: '{uncertain_obj.label}' (ORANGE) in POV - zone VERIFIED → Will be REMOVED from uncertain_objects")
-                    else:
-                        print(f"   ⏭️ '{uncertain_obj.label}' (ORANGE) is OUTSIDE the POV (centroid) → ignored")
-
-            if uncertain_to_remove:
-                print(f"\nDELETION OF UNCERTAIN OBJECTS FROM UNCERTAIN_OBJECTS (VERIFIED ZONE) - TRACKING STEP {self.tracking_step_counter}")
-                for uncertain_obj in uncertain_to_remove:
-                    tracking_logger.log_deletion(uncertain_obj.label, "Uncertain zone verified", bbox=uncertain_obj.bbox,
-                                                step_number=self.tracking_step_counter, obj=uncertain_obj, case_type="UNCERTAIN ZONE VERIFIED")
-                    self.uncertain_objects.remove(uncertain_obj)
-
-                objects_modified = True
-            else:
-                if self.uncertain_objects:
-                    print(f"No uncertain object to remove in this step")
-                else:
-                    print(f"No uncertain object present")
-
+        # ======== PUBLISH & SAVE ========
         if objects_modified and not in_exploration:
             publish_persistent_bboxes(self, wm, self.persistent_bbox_pub)
             publish_persistent_centroids(self, wm, self.persistent_centroids_pub)
@@ -999,27 +944,16 @@ class ObjectManagerNode(Node):
             publish_uncertain_centroids(self, self.uncertain_objects, self.uncertain_centroids_pub)
             save_uncertain_objects(self)
 
-        # Save scene graph for this tracking step
         if not in_exploration:
-            tracking_logger.log_tracking_step_start(self.tracking_step_counter)
             save_scene_graph(self, self.tracking_step_counter)
 
-        # Prevent reusing stale data if no new bbox message arrives
         self.latest_bboxes.clear()
         self.latest_fov_volume = None
 
-
-
     def bbox_callback(self, msg):
-        """
-        Callback for 3D bounding boxes.
-        Temporarily stores bbox by label, waiting for semantic matching.
-        Also stores FOV volume from depth camera.
-        """
-
+        """Callback for 3D bounding boxes."""
         self.latest_bboxes = {}
 
-        # Store FOV volume from depth camera (computed by perception node)
         if msg.fov_x_max != 0 or msg.fov_y_max != 0 or msg.fov_z_max != 0:
             self.latest_fov_volume = {
                 "x_min": msg.fov_x_min,
@@ -1029,22 +963,11 @@ class ObjectManagerNode(Node):
                 "z_min": msg.fov_z_min,
                 "z_max": msg.fov_z_max
             }
-            self.log_both('debug', f"[FOV] Received FOV from depth: X[{msg.fov_x_min:.2f}, {msg.fov_x_max:.2f}], "
-                          f"Y[{msg.fov_y_min:.2f}, {msg.fov_y_max:.2f}], Z[{msg.fov_z_min:.2f}, {msg.fov_z_max:.2f}]")
-        else:
-            self.latest_fov_volume = None
 
         for box in msg.boxes:
-            # Normalize values (ensure min < max)
             x_min, x_max = min(box.x_min, box.x_max), max(box.x_min, box.x_max)
             y_min, y_max = min(box.y_min, box.y_max), max(box.y_min, box.y_max)
             z_min, z_max = min(box.z_min, box.z_max), max(box.z_min, box.z_max)
-
-            # Calculate dimensions and volume
-            x_size = x_max - x_min
-            y_size = y_max - y_min
-            z_size = z_max - z_min
-            volume = x_size * y_size * z_size
 
             bbox_data = {
                 "x_min": x_min, "x_max": x_max,
@@ -1061,22 +984,14 @@ class ObjectManagerNode(Node):
                 "description": ""
             }
 
-
     def periodic_bbox_publisher(self):
-        """
-        NEW_MERGE (from ROS1): Periodically publishes persistent and uncertain bounding boxes.
-        Keeps markers visible on RViz during tracking.
-        """
-        # Publish only if NOT in exploration mode
+        """Periodically publishes persistent and uncertain bounding boxes."""
         if not self.exploration_mode:
             if len(wm.persistent_perceptions) > 0:
-                self.log_both('debug', f"[PERIODIC] Periodic publishing of bbox ({len(wm.persistent_perceptions)} objects)")
                 publish_persistent_bboxes(self, wm, self.persistent_bbox_pub)
                 publish_persistent_centroids(self, wm, self.persistent_centroids_pub)
 
-            # NEW: Periodically publishes and saves uncertain objects
             if len(self.uncertain_objects) > 0:
-                self.log_both('debug', f"[PERIODIC] Periodic publishing of uncertain objects ({len(self.uncertain_objects)} objects)")
                 publish_uncertain_bboxes(self, self.uncertain_objects, self.uncertain_bboxes_pub)
                 publish_uncertain_centroids(self, self.uncertain_objects, self.uncertain_centroids_pub)
                 save_uncertain_objects(self)
@@ -1089,7 +1004,7 @@ def main(args=None):
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
-        print(f"OBJECT MANAGER closed{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"OBJECT MANAGER closed {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
     finally:
         try:
@@ -1098,7 +1013,7 @@ def main(args=None):
             pass
         node.destroy_node()
         rclpy.shutdown()
-        tracking_logger.close()  
+        tracking_logger.close()
 
 
 if __name__ == "__main__":

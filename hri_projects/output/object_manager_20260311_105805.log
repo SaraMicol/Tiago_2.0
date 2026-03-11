@@ -1,0 +1,55 @@
+2026-03-11 10:58:05,787 [INFO] === ObjectManagerNode Initialized ===
+2026-03-11 10:58:05,934 [WARNING] ============================================================
+2026-03-11 10:58:05,935 [WARNING] [EXPLORATION] The robot is in EXPLORATION.
+2026-03-11 10:58:05,935 [WARNING] [EXPLORATION] Will switch to TRACKING when an object is seen again.
+2026-03-11 10:58:05,936 [WARNING] ============================================================
+2026-03-11 10:58:05,937 [WARNING] [EXPLORATION] Manual interruption received - switching to TRACKING mode...
+2026-03-11 10:58:05,938 [WARNING] ============================================================
+2026-03-11 10:58:05,939 [WARNING] [EXPLORATION] Exploration phase ENDED!
+2026-03-11 10:58:05,940 [WARNING] [TRACKING] Tracking mode ACTIVATED
+2026-03-11 10:58:05,940 [WARNING] ============================================================
+2026-03-11 10:58:40,827 [INFO] Saved 1 objects to persistent_perception.json
+2026-03-11 10:58:40,827 [INFO] Saved object labels: ['table']
+2026-03-11 10:58:40,828 [DEBUG]   - table: The tabletop surface has a chipped front-left corner with peeling laminate exposing the underlying substrate and a faint circular ring stain near the center. Several small round fastener heads are visible along the rear edge, accompanied by scattered scuff marks, tiny specks, and adhesive residue near one corner where a book was placed.
+2026-03-11 10:58:43,053 [INFO] Saved 2 objects to persistent_perception.json
+2026-03-11 10:58:43,053 [INFO] Saved object labels: ['table', 'headphones']
+2026-03-11 10:58:43,053 [DEBUG]   - table: The tabletop surface has a chipped front-left corner with peeling laminate exposing the underlying substrate and a faint circular ring stain near the center. Several small round fastener heads are visible along the rear edge, accompanied by scattered scuff marks, tiny specks, and adhesive residue near one corner where a book was placed.
+2026-03-11 10:58:43,053 [DEBUG]   - headphones: The item has broad, pillowy oval ear cushions with deep recessed centers and a seamless outer shell, each cup joined to a thick single-band arch by short, angled yokes. The exterior shows a minimal, slightly textured finish with no visible logos, markings, exposed wires, or control buttons, giving it a simple, closed-back appearance.
+2026-03-11 10:58:43,494 [INFO] Saved 3 objects to persistent_perception.json
+2026-03-11 10:58:43,495 [INFO] Saved object labels: ['table', 'headphones', 'book']
+2026-03-11 10:58:43,495 [DEBUG]   - table: The tabletop surface has a chipped front-left corner with peeling laminate exposing the underlying substrate and a faint circular ring stain near the center. Several small round fastener heads are visible along the rear edge, accompanied by scattered scuff marks, tiny specks, and adhesive residue near one corner where a book was placed.
+2026-03-11 10:58:43,495 [DEBUG]   - headphones: The item has broad, pillowy oval ear cushions with deep recessed centers and a seamless outer shell, each cup joined to a thick single-band arch by short, angled yokes. The exterior shows a minimal, slightly textured finish with no visible logos, markings, exposed wires, or control buttons, giving it a simple, closed-back appearance.
+2026-03-11 10:58:43,495 [DEBUG]   - book: The front cover includes a horizontal band near the top containing printed text and a small square label or logo positioned at the lower-right corner of the cover. The book is a thick bound volume with dense page edges and a slightly rounded spine, showing minor edge wear and resting at a slight angle that exposes the layered pages.
+2026-03-11 10:58:43,497 [INFO] Saved 0 uncertain objects in uncertain_objects.txt
+2026-03-11 10:58:44,012 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_tracking_001.json
+2026-03-11 10:58:44,352 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_tracking_001.png
+2026-03-11 10:59:35,592 [INFO] Saved 4 objects to persistent_perception.json
+2026-03-11 10:59:35,593 [INFO] Saved object labels: ['table', 'headphones', 'book', 'book#2']
+2026-03-11 10:59:35,593 [DEBUG]   - table: The tabletop surface has a chipped front-left corner with peeling laminate exposing the underlying substrate and a faint circular ring stain near the center. Several small round fastener heads are visible along the rear edge, accompanied by scattered scuff marks, tiny specks, and adhesive residue near one corner where a book was placed.
+2026-03-11 10:59:35,593 [DEBUG]   - headphones: The item has broad, pillowy oval ear cushions with deep recessed centers and a seamless outer shell, each cup joined to a thick single-band arch by short, angled yokes. The exterior shows a minimal, slightly textured finish with no visible logos, markings, exposed wires, or control buttons, giving it a simple, closed-back appearance.
+2026-03-11 10:59:35,593 [DEBUG]   - book: The front cover includes a horizontal band near the top containing printed text and a small square label or logo positioned at the lower-right corner of the cover. The book is a thick bound volume with dense page edges and a slightly rounded spine, showing minor edge wear and resting at a slight angle that exposes the layered pages.
+2026-03-11 10:59:35,593 [DEBUG]   - book#2: The spine displays the printed title '3ds max 5' with the subtitle 'FUNDAMENTALS' set beneath in uppercase and a small rectangular publisher mark near the lower edge. A narrow contrasting band runs along the bottom of the spine and there is light scuffing at the top corner, with the title set in a modern sans-serif and condensed uppercase subtitle.
+2026-03-11 10:59:35,596 [INFO] Saved 0 uncertain objects in uncertain_objects.txt
+2026-03-11 10:59:35,597 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_tracking_002.json
+2026-03-11 10:59:35,930 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_tracking_002.png
+2026-03-11 11:00:23,823 [INFO] Saved 3 objects to persistent_perception.json
+2026-03-11 11:00:23,824 [INFO] Saved object labels: ['table', 'book', 'headphones']
+2026-03-11 11:00:23,824 [DEBUG]   - table: The tabletop surface has a chipped front-left corner with peeling laminate exposing the underlying substrate and a faint circular ring stain near the center. Several small round fastener heads are visible along the rear edge, accompanied by scattered scuff marks, tiny specks, and adhesive residue near one corner where a book was placed.
+2026-03-11 11:00:23,824 [DEBUG]   - book: The front cover includes a horizontal band near the top containing printed text and a small square label or logo positioned at the lower-right corner of the cover. The book is a thick bound volume with dense page edges and a slightly rounded spine, showing minor edge wear and resting at a slight angle that exposes the layered pages.
+2026-03-11 11:00:23,824 [DEBUG]   - headphones: The item has broad, pillowy oval ear cushions with deep recessed centers and a seamless outer shell, each cup joined to a thick single-band arch by short, angled yokes. The exterior shows a minimal, slightly textured finish with no visible logos, markings, exposed wires, or control buttons, giving it a simple, closed-back appearance.
+2026-03-11 11:00:23,825 [INFO] Saved 0 uncertain objects in uncertain_objects.txt
+2026-03-11 11:00:23,826 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_tracking_003.json
+2026-03-11 11:00:24,135 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_tracking_003.png
+2026-03-11 11:01:15,577 [INFO] Saved 2 objects to persistent_perception.json
+2026-03-11 11:01:15,578 [INFO] Saved object labels: ['table', 'book']
+2026-03-11 11:01:15,578 [DEBUG]   - table: The tabletop surface has a chipped front-left corner with peeling laminate exposing the underlying substrate and a faint circular ring stain near the center. Several small round fastener heads are visible along the rear edge, accompanied by scattered scuff marks, tiny specks, and adhesive residue near one corner where a book was placed.
+2026-03-11 11:01:15,578 [DEBUG]   - book: The front cover includes a horizontal band near the top containing printed text and a small square label or logo positioned at the lower-right corner of the cover. The book is a thick bound volume with dense page edges and a slightly rounded spine, showing minor edge wear and resting at a slight angle that exposes the layered pages.
+2026-03-11 11:01:15,579 [INFO] Saved 0 uncertain objects in uncertain_objects.txt
+2026-03-11 11:01:15,579 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_tracking_004.json
+2026-03-11 11:01:15,905 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_tracking_004.png
+2026-03-11 11:01:56,633 [INFO] Saved 1 objects to persistent_perception.json
+2026-03-11 11:01:56,634 [INFO] Saved object labels: ['table']
+2026-03-11 11:01:56,634 [DEBUG]   - table: The tabletop surface has a chipped front-left corner with peeling laminate exposing the underlying substrate and a faint circular ring stain near the center. Several small round fastener heads are visible along the rear edge, accompanied by scattered scuff marks, tiny specks, and adhesive residue near one corner where a book was placed.
+2026-03-11 11:01:56,635 [INFO] Saved 0 uncertain objects in uncertain_objects.txt
+2026-03-11 11:01:56,635 [INFO] [SCENE GRAPH] Saved JSON: /root/exchange/output/scene_graph_tracking_005.json
+2026-03-11 11:01:56,939 [INFO] [SCENE GRAPH] Saved: /root/exchange/output/scene_graph_tracking_005.png

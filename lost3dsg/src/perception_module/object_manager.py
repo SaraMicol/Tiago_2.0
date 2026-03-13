@@ -37,8 +37,9 @@ file_path = os.path.abspath(__file__)
 # Find project root: if in install dir, go to workspace root, else go up to find CMakeLists.txt
 current_dir = os.path.dirname(file_path)
 PROJECT_ROOT = current_dir.split('/install/')[0] if '/install/' in current_dir else os.path.abspath(os.path.join(current_dir, "../.."))
+# Metti il percorso esatto in base a dove si trova realmente il file
 
-with open(os.path.join(PROJECT_ROOT, "perception_module", "api.txt"), "r") as f:
+with open("/root/exchange/lost-3dsg/src/perception_module/api.txt", "r") as f:
     api_key = f.read().strip()
 
 client = OpenAI(api_key=api_key)
